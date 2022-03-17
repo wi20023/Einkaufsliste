@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: meinecooledb
--- Erstellungszeit: 08. Mrz 2022 um 14:42
+-- Erstellungszeit: 17. Mrz 2022 um 15:44
 -- Server-Version: 10.7.3-MariaDB-1:10.7.3+maria~focal
 -- PHP-Version: 8.0.15
 
@@ -20,6 +20,41 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `exampledb`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `list2`
+--
+
+CREATE TABLE `list2` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `quantity` varchar(255) NOT NULL,
+  `unit` varchar(255) NOT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `list2`
+--
+
+INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
+(1, 'Shampoo', '1', 'Stück', '2022-03-17');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `list3`
+--
+
+CREATE TABLE `list3` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `quantity` varchar(255) NOT NULL,
+  `unit` varchar(255) NOT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -49,6 +84,18 @@ INSERT INTO `main list` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 --
 
 --
+-- Indizes für die Tabelle `list2`
+--
+ALTER TABLE `list2`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `list3`
+--
+ALTER TABLE `list3`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indizes für die Tabelle `main list`
 --
 ALTER TABLE `main list`
@@ -57,6 +104,18 @@ ALTER TABLE `main list`
 --
 -- AUTO_INCREMENT für exportierte Tabellen
 --
+
+--
+-- AUTO_INCREMENT für Tabelle `list2`
+--
+ALTER TABLE `list2`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT für Tabelle `list3`
+--
+ALTER TABLE `list3`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT für Tabelle `main list`

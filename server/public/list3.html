@@ -21,9 +21,8 @@
     <!-- The container is for the theme / deisgn -->
     <main role="main" class="container">
 
-        <div class="alert alert-info" role="alert">
-        <h1>Einkaufsliste 1</h1>
-        </div>
+
+        <h1>Einkaufsliste 3</h1>
         <button type="button" onclick="loadDoc()" class="btn btn-primary">Manual refresh</button>
         <br><br>
         <div id="target">
@@ -77,7 +76,7 @@
                     }
                 };
                 // the "../" is required because we're in "static" folder!
-                xhttp.open("GET", "../database", true);
+                xhttp.open("GET", "../database/list3", true);
                 xhttp.send();
             }
 
@@ -101,7 +100,7 @@
                     loadDoc();
                 };
                 // the "../" is required because we're in "static" folder!
-                xhttp.open("DELETE", "../database/" + id, true);
+                xhttp.open("DELETE", "../database/list3/" + id, true);
                 xhttp.send();
             }
 
@@ -110,7 +109,7 @@
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
                 // define the type POST to the url "../database" - we are in 'static/database'
-                xhr.open("POST", "../database", true);
+                xhr.open("POST", "../database/list3", true);
                 // define that the content will be JSON (serialization)
                 xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 // prepare the structure of the message

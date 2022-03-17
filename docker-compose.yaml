@@ -19,6 +19,8 @@ services:
     # See README.md for more information.
     build: db
     restart: always
+    # ports: 
+    #   - "3306:3306"
     environment:
       MYSQL_DATABASE: exampledb
       MYSQL_USER: exampleuser
