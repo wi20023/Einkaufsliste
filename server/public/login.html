@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <!-- The following is bootstrap: https://getbootstrap.com/docs/4.3/getting-started/introduction/ -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="css/custom.css">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+</head>
+<body>
+
+  <ul>
+    <li><a href="mainPage.html">Startseite</a></li>
+    <li><a href="register.html">Registrierung</a></li>
+  </ul>
+    
+  <div id="error"></div>
+  <div id="isitvalid"></div>
+  <div id="testinsert"></div>
+  <div id="funktionstest"></div>
+  <div id="alert"></div>
+
+    <form id="form" action="#" method="get">
+
+      <div>
+        <label for="username">Benutzername</label>
+        <input id="username" type="text" placeholder="Benutzername" name="username" required>
+        <!-- <span id="usernameerror"></span> -->
+    </div>
+    <div>
+        <label for="password">Passwort</label>
+        <input id="password" type="password" placeholder="Passwort" name="password" required>
+        <!-- <span id="passworderror"></span> -->
+    </div>
+
+    <button type="button" onclick="login()">Login</button>
+
+    <div class="container signin">
+      <p>Sie haben noch keinen Account? <a href=register.html>Registrierung</a>.</p>
+    </div>
+  </form>
+
+<script>
+
+function login(){   
+
+//Error if username is blank
+if (username.value === '' || username.value == null) {
+                  messages.push('Bitte Benutzername eingeben.');    
+                } else
+                //Error if password is blank
+                if (password.value === '' || password.value == null) {
+                  messages.push('Bitte Passwort eingeben.');
+                 }
+             
+              var xhr = new XMLHttpRequest();
+                    // define the type POST to the url "../registry" - we are in 'static/registry'
+                    xhr.open("GET", "../database/user", true);
+                    // define that the content will be JSON (serialization)
+                    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                    // prepare the structure of the message
+                    var data_to_send = {
+                        username: "",
+                        password: ""
+                    }
+
+                    // Load from the inputfields
+                    data_to_send.username = document.getElementById("username").value;
+                    data_to_send.password = document.getElementById("password").value;
+
+                    // send data as JSON
+                    xhr.send(JSON.stringify(data_to_send));
+
+                    // Handle the answer from the server:
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            // Parse the JSON answer from the server:
+                            var answer = JSON.parse(this.responseText);
+                            //redirect to index.html if the registration is succesfull
+                            location.href="index.html"
+                        } else if (this.readyState == 4 && this.status == 500) {
+                            // We got an error:
+                            var error = JSON.parse(this.responseText);
+                            console.log("ERROR: ", error);
+                            // Show error alert:
+                            showErrorAlert('Die Registrierung war nicht erfolgreich. Bitte versuche es erneut.');
+                        }
+                    };
+                  }
+  
+//     // username >= 3
+//     if (!req.body.username || req.body.username.length < 3) {
+//       return res.status(400).send({
+//         msg: 'Der Benutzername muss mindestens 3 Zeichen lang sein.'
+//       });
+//     }
+//     // password >= 5
+//     if (!req.body.password || req.body.password.length < 5) {
+//       return res.status(400).send({
+//         msg: 'Das Passwort muss mindes 5 Zeichen lang sein.'
+//       });
+//     next();
+//   }
+// };
+    
+</script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 
 const express = require('express');
 
+
 // Database
 const mysql = require('mysql');
 // Database connection info - used from environment variables
@@ -16,17 +17,6 @@ var dbInfo = {
 var connection = mysql.createPool(dbInfo);
 console.log("Conecting to database...");
 // connection.connect(); <- connect not required in connection pool
-
-// SQL Database init.
-// In this current demo, this is done by the "database.sql" file which is stored in the "db"-container (./db/).
-// Alternative you could use the mariadb basic sample and do the following steps here:
-// connection.query("CREATE TABLE IF NOT EXISTS list (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255) NOT NULL, quantity VARCHAR(255), unit VARCHAR(255), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)  ENGINE=INNODB;", function (error, results, fields) {
-//     if (error) throw error;
-//     console.log('Answer: ', results);
-// });
-
-
-// See readme.md for more information about that.
 
 // Check the connection
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
@@ -54,22 +44,21 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static
+//Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static
 app.get('/', (req, res) => {
     console.log("Got a request and redirect it to the static page");
     // redirect will send the client to another path / route. In this case to the static route.
-    res.redirect('/static');
+    res.redirect('/static/mainPage.html');
 });
 
-// Another GET Path - call it with: http://localhost:8080/special_path
-app.get('/special_path', (req, res) => {
-    res.send('This is another path');
+// Login GET Path - call it with: http://localhost:8080/login.html
+app.get('/login.html', (req, res) => {
+    res.redirect('/login.html');
 });
 
-// Another GET Path that shows the actual Request (req) Headers - call it with: http://localhost:8080/request_info
-app.get('/request_info', (req, res) => {
-    console.log("Request content:", req)
-    res.send('This is all I got from the request:' + JSON.stringify(req.headers));
+// Register GET Path - call it with: http://localhost:8080/register.html
+app.get('/register.html', (req, res) => {
+    res.redirect('/register.html');
 });
 
 // POST Path - call it with: POST http://localhost:8080/client_post
@@ -147,7 +136,7 @@ app.post('/database', (req, res) => {
     
         // Actual executing the query. Please keep in mind that this is for learning and education.
         // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `main list` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_timestamp());", function (error, results, fields) {
+        connection.query("INSERT INTO `main list` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_date());", function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -228,7 +217,7 @@ app.post('/database/list2', (req, res) => {
     
         // Actual executing the query. Please keep in mind that this is for learning and education.
         // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_timestamp());", function (error, results, fields) {
+        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_date());", function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -278,6 +267,7 @@ app.delete('/database/list3/:id', (req, res) => {
     // Actual executing the query to delete it from the server
     // Please keep in mind to secure this for SQL injection!
     connection.query("DELETE FROM `list3` WHERE `list3`.`id` = " + id + ";", function (error, results, fields) {
+    
     // SQL-Injection vermeiden:  
     // const data = request.body;
     // connection.query("DELETE FROM `main list` WHERE `id` = ?", [data.id], function (error, results, fields) {  
@@ -308,7 +298,7 @@ app.post('/database/list3', (req, res) => {
     
         // Actual executing the query. Please keep in mind that this is for learning and education.
         // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_timestamp());", function (error, results, fields) {
+        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_date());", function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -329,6 +319,62 @@ app.post('/database/list3', (req, res) => {
     }
 });
 // ###################### DATABASE PART END (list3) ######################
+
+
+// ###################### DATABASE PART (user) ######################
+// GET path for database
+app.get('/database/user', (req, res) => {
+    console.log("Request to load all entries from user");
+    // Prepare the get query
+    connection.query("SELECT * FROM `user`;", function (error, results, fields) {
+        if (error) {
+            // we got an errror - inform the client
+            console.error(error); // <- log error in server
+            res.status(500).json(error); // <- send to client
+        } else {
+            // we got no error - send it to the client
+            console.log('Success answer from DB: ', results); // <- log results in console
+            // INFO: Here could be some code to modify the result
+            res.status(200).json(results); // <- send it to client
+        }
+    });
+});
+
+// POST path for database
+app.post('/database/user', (req, res) => {
+    // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
+    // it will be added to the database with a query.
+    if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
+        // The content looks good, so move on
+        // Get the content to local variables:
+        var username = req.body.username;
+        var password = req.body.password;
+        console.log("Client send database insert request with `username`: " + username + " ; password: " + password); // <- log to server
+    
+        // Actual executing the query. Please keep in mind that this is for learning and education.
+        // In real production environment, this has to be secure for SQL injection!
+        connection.query("INSERT INTO `user` (`id`, `username`, `password`) VALUES (NULL, '" + username + "', '" + password + "');", function (error, results, fields) {
+            if (error) {
+                // we got an errror - inform the client
+                console.error(error); // <- log error in server
+                res.status(500).json(error); // <- send to client
+            } else {
+                // Everything is fine with the query
+                console.log('Success answer: ', results); // <- log results in console
+                // INFO: Here can be some checks of modification of the result
+                res.status(200).json(results); // <- send it to client
+            }
+        });
+    }
+    else {
+        // There is nobody with a title nor description
+        console.error("Client send no correct data!")
+        // Set HTTP Status -> 400 is client error -> and send message
+        res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
+    }
+});
+// ###################### DATABASE PART END (user) ######################
+
 
 
 // All requests to /static/... will be redirected to static files in the folder "public"
