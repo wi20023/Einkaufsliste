@@ -30,16 +30,18 @@ services:
       MYSQL_USER: user1
       MYSQL_PASSWORD: pass1
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MARIADB_RANDOM_ROOT_PASSWORD: '1234'
   host2:
     # Use of a modified datbase in 'db'-folder.
     # See README.md for more information.
     build: db2
     restart: always
     environment:
-      MYSQL_DATABASE2: LoginDB
-      MYSQL_USER2: user2
-      MYSQL_PASSWORD2: pass2
-      MYSQL_ROOT_PASSWORD2: '12'
+      MYSQL_DATABASE: LoginDB
+      MYSQL_USER: user2
+      MYSQL_PASSWORD: pass2
+      MYSQL_ROOT_PASSWORD: '12'
+      MARIADB_RANDOM_ROOT_PASSWORD: '123'
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
