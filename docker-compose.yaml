@@ -38,7 +38,7 @@ services:
     environment:
       MYSQL_DATABASE2: LoginDB
       MYSQL_USER2: user2
-      MYSQL_PASSWORD2: password
+      MYSQL_PASSWORD2: pass2
       MYSQL_ROOT_PASSWORD2: '12'
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
