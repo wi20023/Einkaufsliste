@@ -24,49 +24,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `list4`
---
-
-CREATE TABLE `list4` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `quantity` varchar(255) NOT NULL,
-  `unit` varchar(255) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Daten für Tabelle `list4`
---
-
-INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
-(1, 'Shampoo', '1', 'Stück', '2022-03-17');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `list5`
---
-
-CREATE TABLE `list5` (
-  `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `quantity` varchar(255) NOT NULL,
-  `unit` varchar(255) NOT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `main`
 --
 
 CREATE TABLE `main` (
   `id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `quantity` varchar(255) NOT NULL,
-  `unit` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `created_at` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -74,26 +38,14 @@ CREATE TABLE `main` (
 -- Daten für Tabelle `main`
 --
 
-INSERT INTO `main` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
-(1, 'Bananen', '6', 'Stück', '2020-04-09'),
-(2, 'Brot', '1', 'Stück', '2020-04-09'),
-(3, 'Mehl', '1', 'Kg', '2020-04-09');
+INSERT INTO `main` (`id`, `username`, `password`) VALUES
+(1, 'Jana', '123'),
+(2, 'Katharina', '1234'),
+(3, 'Tijana', '12345');
 
 --
 -- Indizes der exportierten Tabellen
 --
-
---
--- Indizes für die Tabelle `list4`
---
-ALTER TABLE `list4`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `list5`
---
-ALTER TABLE `list5`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indizes für die Tabelle `main`
@@ -104,18 +56,6 @@ ALTER TABLE `main`
 --
 -- AUTO_INCREMENT für exportierte Tabellen
 --
-
---
--- AUTO_INCREMENT für Tabelle `list4`
---
-ALTER TABLE `list4`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT für Tabelle `list5`
---
-ALTER TABLE `list5`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT für Tabelle `main`
