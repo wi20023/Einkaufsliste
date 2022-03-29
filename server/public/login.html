@@ -31,6 +31,9 @@
   <div id="alert"></div>
 
     <form id="form" action="#" method="get">
+      <h1>Login</h1>
+      <p>Bitte melden Sie sich mit Ihren Login-Daten an.</p>
+      <hr>
 
       <div>
         <label for="username">Benutzername</label>
@@ -50,7 +53,16 @@
     </div>
   </form>
 
+  <div id="alert">
+    <!-- Here will be the alerts displayed -->
+</div>
+
 <script>
+
+function showErrorAlert(message) {
+                // Write error alert:
+                document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+            }
 
 function login(){   
 
@@ -97,22 +109,7 @@ if (username.value === '' || username.value == null) {
                         }
                     };
                   }
-  
-//     // username >= 3
-//     if (!req.body.username || req.body.username.length < 3) {
-//       return res.status(400).send({
-//         msg: 'Der Benutzername muss mindestens 3 Zeichen lang sein.'
-//       });
-//     }
-//     // password >= 5
-//     if (!req.body.password || req.body.password.length < 5) {
-//       return res.status(400).send({
-//         msg: 'Das Passwort muss mindes 5 Zeichen lang sein.'
-//       });
-//     next();
-//   }
-// };
-    
+     
 </script>
 </body>
 </html>

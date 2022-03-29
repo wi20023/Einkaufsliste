@@ -26,7 +26,6 @@
   <form id="form" action="#" method="get">
     <h1>Registrierung</h1>
     <p>Neuen Account erstellen.</p>
-    <p>Neuen Account erstellen2.</p>
     <hr>
 
     <div>
@@ -51,12 +50,18 @@
     <p>Sie haben bereits einen Account? <a href="login.html">Login</a>.</p>
   </div>
 
-  <div id="alert"></div>
-  <div id="test"></div>
+  <div id="alert">
+    <!-- Here will be the alerts displayed -->
+  </div>
 
 </form>
 
 <script>
+
+            function showErrorAlert(message) {
+                // Write error alert:
+                document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+            }
             //Prüfung funktioniert noch nicht richtig!!!
             // HTTP request
             function registration() {
