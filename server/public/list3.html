@@ -1,0 +1,158 @@
+<html>
+
+<head>
+    <title>Einkaufsliste</title>
+    <!-- The following is bootstrap: https://getbootstrap.com/docs/4.3/getting-started/introduction/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- The container is for the theme / deisgn -->
+    <main role="main" class="container">
+
+
+        <h1>Liste 3</h1>
+        <button type="button" onclick="loadDoc()" class="btn btn-primary">Manual refresh</button>
+        <br><br>
+        <div id="target">
+            <!-- Here will be the database displayed -->
+            Loading please wait...
+        </div>
+
+        <div id="alert">
+            <!-- Here will be the alerts displayed -->
+        </div>
+
+        <script>
+
+            function showErrorAlert(message) {
+                // Write error alert:
+                document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+            }
+
+            function showSuccessAlert(message) {
+                // Write success alert:
+                document.getElementById("alert").innerHTML = '<div class="alert alert-success" role="alert">' + message + '</div>';
+
+            }
+
+
+            // The loadDoc()-function will load the table into the defined space
+            function loadDoc() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // debugger; // <- you can use the debugger for better developing in the browser
+                        // console.log(this.responseText); // this can also help durring debugging in the console of the browser
+                        // console.log(JSON.parse(this.responseText)); // even function output like JSON is visible in the browser console
+
+                        // Parse the JSON answer from the server:
+                        var row = JSON.parse(this.responseText);
+                        // Start the HTML table that should be displayed:
+                        var txt = "<table class='table table-striped table-hover'>";
+                        // add the table hader to it
+                        txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th></tr>"
+                        // Go through each row and add it to the table
+                        for (var x in row) {
+                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
+                        }
+                        // Now add a input row to add a new entry:
+                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' value='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
+                        // end of the table:
+                        txt += "</table>"
+
+                        document.getElementById("target").innerHTML = txt;
+                    }
+                };
+                // the "../" is required because we're in "static" folder!
+                xhttp.open("GET", "../database/list3", true);
+                xhttp.send();
+            }
+
+            // The deleteRow(id)-function will delete a row based on the given id. The "Delete"-Button will use this and give the ID to it.
+            function deleteRow(id) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Erledigt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht entfernt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+                // the "../" is required because we're in "static" folder!
+                xhttp.open("DELETE", "../database/list3/" + id, true);
+                xhttp.send();
+            }
+
+            // The addRow()-function will add a row to the table. It will use the "title" and "description" input field. All other fields will be added by the database (see server.js)
+            function addRow() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/list3", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "",
+                    quantity: "",
+                    unit: ""
+                }
+                // Load the title and description from the inputfields on this page:
+                data_to_send.title = document.getElementById("title").value;
+                data_to_send.quantity = document.getElementById("quantity").value;
+                data_to_send.unit = document.getElementById("unit").value;
+                // send the collected data as JSON
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // load the table at the start
+            loadDoc();
+        </script>
+
+    <!-- Return-Button -->
+    <input type="button" value="Zurück" onClick="javascript:history.back()">
+
+    </main><!-- /.container -->
+
+</body>
+
+</html>

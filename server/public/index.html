@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <title>Einkaufsliste</title>
+    <!-- The following is bootstrap: https://getbootstrap.com/docs/4.3/getting-started/introduction/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+</head>
+
+<body>
+
+    <!-- The container is for the theme / deisgn -->
+    <main role="main" class="container">
+
+        <ul>
+        <li><a href="logout.html">Logout</a></li>
+        </ul>
+        
+        <!-- <h1>Willkommen zurück "Name"</h1>   -->
+
+        <!-- Link to the Database Sample -->
+        <div class="alert alert-info" role="alert">
+        <h2>Unsere Liste</h2>
+        <a href="database.html">Unsere Einkaufsliste</a>
+        </div>
+
+        <div class="alert alert-info" role="alert">
+        <h4>Weitere Listen</h4>
+        <a href="list2.html">Liste 2</a></br>
+        <a href="list3.html">Liste 3</a></br>
+        </div>
+
+        
+        <div class="alert alert-info" role="alert">
+        <h2>Aktuelle Angebote</h2>
+        <a href="https://www.lidl.de/?mktc=brandpaidsearch_retail&gclid=Cj0KCQiAmpyRBhC-ARIsABs2EAoFo-GVBTIMtDyohomD4XqCn1_NdZQJaGnTXWa2uWDJ2Py2XGXFuIUaAli6EALw_wcB" target="_blank">Lidl</a>
+        <b> | </b>
+        <a href="https://www.edeka.de/eh/angebote.jsp" target="_blank">Edeka</a>
+        <b> | </b>
+        <a href="https://www.aldi-sued.de/de/angebote.html" target="_blank">Aldi Süd</a>
+        <b> | </b>
+        <a href="https://www.rewe.de/angebote/nationale-angebote/?ecid=sea_google_vs_brands_br%7Cnt-ak-%7C-wochenangebote_[exact]-rewe-angebote_text-ad_823563045_45041351991" target="_blank">REWE</a>
+        <b> | </b>
+        <a href="https://filiale.kaufland.de/angebote.html?cid=de:sea:google_939259596_46397102283&campaign=939259596&adgroupid=46397102283&matchtype=e&network=g&keyword=kaufland%20aktuelle%20angebote&placement=&target=aud-656306583294:kwd-300456523090&adposition=&creative=224664709874&aceid=&device=c&gclid=Cj0KCQjw29CRBhCUARIsAOboZbIivh-lZGU8wtk4VNTQ5nh4ieHMAXkNDxM554ns0-NtNwHAv3FauzoaAr9hEALw_wcB&gclid=Cj0KCQjw29CRBhCUARIsAOboZbIivh-lZGU8wtk4VNTQ5nh4ieHMAXkNDxM554ns0-NtNwHAv3FauzoaAr9hEALw_wcB#aktuelle-woche" target="_blank">Kaufland</a>
+        <b> | </b>        
+        <a href="https://www.kaufda.de/Branchen/Discounte" target="_blank">Weitere Angebote</a>
+        </div>
+
+
+        <div class="alert alert-info" role="alert">
+            <h2>Rezeptideen</h2>
+            <a href="https://www.chefkoch.de/rezepte/was-koche-ich-heute/" target="_blank">Chefkoch.de</a>
+<b> | </b>           
+            <a href="https://eatsmarter.de/rezepte" target="_blank">EatSmarter.de</a>
+        </div>
+
+        <div class="alert alert-info" role="alert">
+             <h2>Saisonkalender</h2>
+             <figure class="gallery">
+                <img src="img/saison_gemuese.png" alt="Saisonkalender Gemüse">
+                <img src="img/saison_obst.png" alt="Saisonkalender Obst">
+                <figcaption class="figure-caption">Quelle: <a href="https://www.eatsmarter.de" target="_blank">EatSmarter</a></figcaption>
+            </figure>
+            </div>
+
+        <div class="alert alert-info" role="alert">
+             <center><b>Kurs WWI2020V | Einkaufsliste - Verteilte Systeme | Jana Kopsch, Katharina Lena Willig, Tijana Zivkovic | 2022</b></center>
+             </div>
+
+            </main>
+
+        <script>
+            function loadDoc() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("target").innerHTML =
+                            this.responseText;
+                    }
+                };
+                // the "../" is required because we're in "static" folder!
+                xhttp.open("GET", "../button2", true);
+                xhttp.send();
+            }
+        </script>
+
+    </main><!-- /.container -->
+
+</body>
+
+</html>
