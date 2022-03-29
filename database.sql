@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `main`
+-- Tabellenstruktur für Tabelle `user`
 --
 
-CREATE TABLE `main` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -35,10 +35,10 @@ CREATE TABLE `main` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `main`
+-- Daten für Tabelle `user`
 --
 
-INSERT INTO `main` (`id`, `username`, `password`) VALUES
+INSERT INTO `user` (`id`, `username`, `password`) VALUES
 (1, 'Jana', '123'),
 (2, 'Katharina', '1234'),
 (3, 'Tijana', '12345');
@@ -48,9 +48,9 @@ INSERT INTO `main` (`id`, `username`, `password`) VALUES
 --
 
 --
--- Indizes für die Tabelle `main`
+-- Indizes für die Tabelle `user`
 --
-ALTER TABLE `main`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -58,9 +58,9 @@ ALTER TABLE `main`
 --
 
 --
--- AUTO_INCREMENT für Tabelle `main`
+-- AUTO_INCREMENT für Tabelle `user`
 --
-ALTER TABLE `main`
+ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
