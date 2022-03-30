@@ -26,6 +26,7 @@
   <form id="form" action="#" method="get">
     <h1>Registrierung</h1>
     <p>Neuen Account erstellen.</p>
+    <p>TEST 30.03.2022</p>
     <hr>
 
     <div>
@@ -62,6 +63,7 @@
                 // Write error alert:
                 document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
             }
+            
             //Prüfung funktioniert noch nicht richtig!!!
             // HTTP request
             function registration() {
@@ -85,7 +87,7 @@
              }
               var xhr = new XMLHttpRequest();
                     // define the type POST to the url "../registry" - we are in 'static/registry'
-                    xhr.open("POST", "../database/user", true);
+                    xhr.open("POST", "../database_user/user", true);
                     // define that the content will be JSON (serialization)
                     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                     // prepare the structure of the message
