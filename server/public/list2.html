@@ -39,7 +39,7 @@
         <figure class="gallery">
             <button type="button" onclick="addWater()"><img src="img/water.png" alt="Water"></button>
             <button type="button" onclick="addLemonade()"><img src="img/lemonade.png" alt="Limonade"></button>
-            <button type="button" onclick="addFruits()"><img src="img/fruits.png" alt="Eggs"></button>
+            <button type="button" onclick="addFruits()"><img src="img/fruits.png" alt="Fruits"></button>
             <button type="button" onclick="addVegetables()"><img src="img/vegetables.png" alt="Milk"></button>
             <button type="button" onclick="addEggs()"><img src="img/eggs.png" alt="Eggs"></button>
             <button type="button" onclick="addMilk()"><img src="img/milk.png" alt="Milk"></button>
@@ -162,8 +162,8 @@ function showErrorAlert(message) {
                 };
             }
 
-                           // The addWater()-function will add a row to the table.
-                           function addWater() {
+                // The addWater()-function will add a row to the table.
+                function addWater() {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
                 // define the type POST to the url "../database" - we are in 'static/database'
