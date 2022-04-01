@@ -68,10 +68,10 @@ INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `main list`
+-- Tabellenstruktur für Tabelle `mainList`
 --
 
-CREATE TABLE `main list` (
+CREATE TABLE `mainList` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
@@ -80,10 +80,10 @@ CREATE TABLE `main list` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `main list`
+-- Daten für Tabelle `mainList`
 --
 
-INSERT INTO `main list` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
+INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 (1, 'Bananen', '6', 'Stück', '2020-04-09'),
 (2, 'Brot', '1', 'Stück', '2020-04-09');
 
@@ -93,18 +93,18 @@ INSERT INTO `main list` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 -- Tabellenstruktur für Tabelle `user`
 --
 
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- CREATE TABLE `user` (
+--   `id` int(11) NOT NULL,
+--   `username` varchar(50) NOT NULL,
+--   `password` varchar(255) NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Daten für Tabelle `user`
---
+-- --
+-- -- Daten für Tabelle `user`
+-- --
 
-INSERT INTO `user` (`id`, `username`, `password`) VALUES
-(1, 'jana', '12345');
+-- INSERT INTO `user` (`id`, `username`, `password`) VALUES
+-- (1, 'jana', '12345');
 
 --
 -- Indizes der exportierten Tabellen
@@ -123,16 +123,16 @@ ALTER TABLE `list3`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `main list`
+-- Indizes für die Tabelle `mainList`
 --
-ALTER TABLE `main list`
+ALTER TABLE `mainList`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indizes für die Tabelle `user`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+-- ALTER TABLE `user`
+--   ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
@@ -151,16 +151,16 @@ ALTER TABLE `list3`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT für Tabelle `main list`
+-- AUTO_INCREMENT für Tabelle `mainList`
 --
-ALTER TABLE `main list`
+ALTER TABLE `mainList`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+-- ALTER TABLE `user`
+--   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
