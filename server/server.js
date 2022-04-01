@@ -181,7 +181,7 @@ app.post('/database_user/user', (req, res) => {
         // There is nobody with a title nor description
         console.error("Client send no correct data!")
         // Set HTTP Status -> 400 is client error -> and send message
-        res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
+        res.status(400).json({ message: 'This function requries a body with "tusername", and "password"' });
     }
 });
 // ###################### DATABASE PART END (user) ######################
@@ -214,11 +214,11 @@ app.delete('/database/mainList/:id', (req, res) => {
 
     // Actual executing the query to delete it from the server
     // Please keep in mind to secure this for SQL injection!
-    // connection.query("DELETE FROM `mainList` WHERE `mainList`.`id` = " + id + ";", function (error, results, fields) {
+    connection.query("DELETE FROM `mainList` WHERE `mainList`.`id` = " + id + ";", function (error, results, fields) {
     // SQL-Injection vermeiden:  
-     connection.query("DELETE FROM `mainList` WHERE `mainList`.`id` = ?", [
-     req.body.id
-    ], function (error, results, fields) {  
+    //  connection.query("DELETE FROM `mainList` WHERE `mainList`.`id` = ?", [
+    //  req.body.id
+    // ], function (error, results, fields) {  
         if (error) {
             // we got an errror - inform the client
             console.error(error); // <- log error in server
