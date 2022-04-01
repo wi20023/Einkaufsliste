@@ -28,7 +28,7 @@
     <form id="form" action="#" method="get">
       <h1>Login</h1>
       <p>Bitte melden Sie sich mit Ihren Login-Daten an.</p>
-      <p>TEST 30.03.2022 nur Weiterleitung</p>
+      <p>TEST 01.04.2022</p>
       <hr>
 
       <div>
@@ -44,14 +44,14 @@
 
     <button type="button" onclick="login()">Login</button>
 
+    <div id="alert">
+      <!-- Here will be the alerts displayed -->
+    </div>
+
     <div class="container signin">
       <p>Sie haben noch keinen Account? <a href=register.html>Registrierung</a>.</p>
     </div>
   </form>
-
-  <div id="alert">
-    <!-- Here will be the alerts displayed -->
-</div>
 
 <script>
 
@@ -64,50 +64,48 @@ function login(){
 
 //Error if username is blank
 if (username.value === '' || username.value == null) {
-                  messages.push('Bitte Benutzername eingeben.');    
+                showErrorAlert('Bitte Benutzernamen eingeben.');  
                 } else
                 //Error if password is blank
                 if (password.value === '' || password.value == null) {
-                  messages.push('Bitte Passwort eingeben.');
-                 } else {
-                  location.href="index.html"
-                 }
-                }
+                  showErrorAlert('Passwort eingeben.');
+                } else {
              
-              // var xhr = new XMLHttpRequest();
-              //       // define the type POST to the url "../registry" - we are in 'static/registry'
-              //       xhr.open("GET", "../database_user/user", true);
-              //       // define that the content will be JSON (serialization)
-              //       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-              //       // prepare the structure of the message
-              //       var data_to_send = {
-              //           username: "",
-              //           password: ""
-              //       }
+              var xhr = new XMLHttpRequest();
+                    // define the type POST to the url "../registry" - we are in 'static/registry'
+                    xhr.open("GET", "../database_user/user", true);
+                    // define that the content will be JSON (serialization)
+                    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                    // prepare the structure of the message
+                    var data_to_send = {
+                        username: "",
+                        password: ""
+                    }
 
-              //       // Load from the inputfields
-              //       data_to_send.username = document.getElementById("username").value;
-              //       data_to_send.password = document.getElementById("password").value;
+                    // Load from the inputfields
+                    data_to_send.username = document.getElementById("username").value;
+                    data_to_send.password = document.getElementById("password").value;
 
-              //       // send data as JSON
-              //       xhr.send(JSON.stringify(data_to_send));
+                    // send data as JSON
+                    xhr.send(JSON.stringify(data_to_send));
 
-              //       // Handle the answer from the server:
-              //       xhr.onreadystatechange = function () {
-              //           if (this.readyState == 4 && this.status == 200) {
-              //               // Parse the JSON answer from the server:
-              //               var answer = JSON.parse(this.responseText);
-              //               //redirect to index.html if the registration is succesfull
-              //               location.href="index.html"
-              //           } else if (this.readyState == 4 && this.status == 500) {
-              //               // We got an error:
-              //               var error = JSON.parse(this.responseText);
-              //               console.log("ERROR: ", error);
-              //               // Show error alert:
-              //               showErrorAlert('Der Login war nicht erfolgreich. Bitte versuche es erneut.');
-              //           }
-              //       };
-              //     }
+                    // Handle the answer from the server:
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            // Parse the JSON answer from the server:
+                            var answer = JSON.parse(this.responseText);
+                            //redirect to index.html if the registration is succesfull
+                            location.href="index.html"
+                        } else if (this.readyState == 4 && this.status == 500) {
+                            // We got an error:
+                            var error = JSON.parse(this.responseText);
+                            console.log("ERROR: ", error);
+                            // Show error alert:
+                            showErrorAlert('Der Login war nicht erfolgreich. Bitte versuche es erneut.');
+                        }
+                    };
+                  }
+                }
      
 </script>
 </body>

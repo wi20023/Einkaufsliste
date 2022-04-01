@@ -36,6 +36,23 @@
             <!-- Here will be the alerts displayed -->
         </div>
 
+        <figure class="gallery">
+            <button type="button" onclick="addWater()"><img src="img/water.png" alt="Water"></button>
+            <button type="button" onclick="addLemonade()"><img src="img/lemonade.png" alt="Limonade"></button>
+            <button type="button" onclick="addFruits()"><img src="img/fruits.png" alt="Eggs"></button>
+            <button type="button" onclick="addVegetables()"><img src="img/vegetables.png" alt="Milk"></button>
+            <button type="button" onclick="addEggs()"><img src="img/eggs.png" alt="Eggs"></button>
+            <button type="button" onclick="addMilk()"><img src="img/milk.png" alt="Milk"></button>
+            <br>
+            <button type="button" onclick="addCheese()"><img src="img/cheese.png" alt="Cheese"></button>
+            <button type="button" onclick="addBread()"><img src="img/bread.png" alt="Bread"></button>
+            <button type="button" onclick="addMeat()"><img src="img/meat.png" alt="Meat"></button>
+            <button type="button" onclick="addFlour()"><img src="img/flour.png" alt="Flour"></button>
+            <button type="button" onclick="addNoodles()"><img src="img/noodles.png" alt="Noodles"></button>
+            <button type="button" onclick="addOil()"><img src="img/oil.png" alt="Oil"></button>
+            <figcaption class="figure-caption"></figcaption>
+        </figure>
+
         <script>
 
 function showErrorAlert(message) {
@@ -145,8 +162,429 @@ function showErrorAlert(message) {
                 };
             }
 
+                           // The addWater()-function will add a row to the table.
+                           function addWater() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Mineralwasser",
+                    quantity: "1",
+                    unit: "Kasten"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+                // The addLemonade()-function will add a row to the table.
+                function addLemonade() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Limonade",
+                    quantity: "1",
+                    unit: "Kasten"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addFruits()-function will add a row to the table.
+            function addFruits() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Obst",
+                    quantity: "-",
+                    unit: "-"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addVegetables()-function will add a row to the table.
+            function addVegetables() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Gemüse",
+                    quantity: "-",
+                    unit: "-"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addRow()-function will add a row to the table. It will use the "title", "quantity" and  input field. All other fields will be added by the database (see server.js)
+            function addEggs() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Eier",
+                    quantity: "10",
+                    unit: "Stück"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+                // The addRow()-function will add a row to the table. It will use the "title", "quantity" and  input field. All other fields will be added by the database (see server.js)
+                function addMilk() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Milch",
+                    quantity: "12",
+                    unit: "Liter"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+                // The addCheese()-function will add a row to the table.
+                function addCheese() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Käse",
+                    quantity: "1",
+                    unit: "Stück"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+                // The addBread()-function will add a row to the table.
+                function addBread() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Brot",
+                    quantity: "500",
+                    unit: "Gramm"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addMeat()-function will add a row to the table.
+            function addMeat() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Fleisch",
+                    quantity: "1",
+                    unit: "Kg"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addFlour()-function will add a row to the table.
+            function addFlour() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Mehl",
+                    quantity: "5",
+                    unit: "Kg"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addWater()-function will add a row to the table.
+            function addNoodles() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Nudeln",
+                    quantity: "2",
+                    unit: "Packungen"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addOil()-function will add a row to the table.
+            function addOil() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../database/mainList", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Öl",
+                    quantity: "1",
+                    unit: "Liter"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
             // load the table at the start
             loadDoc();
+
         </script>
 
     <!-- Return-Button -->
@@ -155,5 +593,4 @@ function showErrorAlert(message) {
     </main><!-- /.container -->
 
 </body>
-
 </html>
