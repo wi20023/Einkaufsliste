@@ -49,4 +49,10 @@ services:
       - 8085:80
     environment:
       PMA_HOST: host1
-      PMA_HOST2: host2
+  phpmyadmin2:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 8086:80
+    environment:
+      PMA_HOST: host2
