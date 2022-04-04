@@ -90,23 +90,6 @@ INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `user`
---
-
--- CREATE TABLE `user` (
---   `id` int(11) NOT NULL,
---   `username` varchar(50) NOT NULL,
---   `password` varchar(255) NOT NULL
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --
--- -- Daten für Tabelle `user`
--- --
-
--- INSERT INTO `user` (`id`, `username`, `password`) VALUES
--- (1, 'jana', '12345');
-
---
 -- Indizes der exportierten Tabellen
 --
 
@@ -128,11 +111,6 @@ ALTER TABLE `list3`
 ALTER TABLE `mainList`
   ADD PRIMARY KEY (`id`);
 
---
--- Indizes für die Tabelle `user`
---
--- ALTER TABLE `user`
---   ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
@@ -156,11 +134,46 @@ ALTER TABLE `list3`
 ALTER TABLE `mainList`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
+------------------------Table user ----------------------------------------
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `password`) VALUES
+(1, 'Jana', '123'),
+(2, 'Katharina', '1234'),
+(3, 'Tijana', '12345');
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
--- ALTER TABLE `user`
---   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+  ------------------------Table user end ----------------------------------------
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
