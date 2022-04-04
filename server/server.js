@@ -509,6 +509,12 @@ app.post('/database/list3', (req, res) => {
 // });
 // ###################### DATABASE PART END (user) ######################
 
+const shareBtn = document.querySelector('.share-btn');
+const shareOptions = document.querySelector('.share-options');
+
+shareBtn.addEventListener('click', () => {
+    shareOptions.classList.toggle('active');
+})
 
 // All requests to /static/... will be redirected to static files in the folder "public"
 // call it with: http://localhost:8080/static
