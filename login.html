@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <!-- The following is bootstrap: https://getbootstrap.com/docs/4.3/getting-started/introduction/ -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="css/custom.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+  <ul>
+    <li><a href="mainPage.html">Startseite</a></li>
+    <li><a href="register.html">Registrierung</a></li>
+  </ul>
+    
+  <div class="login">
+      <h1>Login</h1>
+      <p>Bitte melden Sie sich mit Ihren Login-Daten an.</p>
+      <p>TEST 04.04.2022</p>
+      <hr>
+
+      <form action="#" method="post">
+				
+				<input type="text" name="username" placeholder="Benutzername" id="username" required>
+				<label for="password">
+					<i class="fas fa-lock"></i>
+				</label>
+				<input type="password" name="password" placeholder="Passwort" id="password" required>
+				
+        <button><input type="submit" value="Login"></button>
+			</form>
+      </div>
+
+    <div id="alert">
+      <!-- Here will be the alerts displayed -->
+    </div>
+
+    <div class="container signin">
+      <p>Sie haben noch keinen Account? <a href=register.html>Registrierung</a>.</p>
+    </div>
+  </form>
+</body>
+</html>
