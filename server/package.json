@@ -1,14 +1,30 @@
 {
-  "name": "docker_web_app_server",
+  "name": "einkaufsliste",
   "version": "1.0.0",
-  "description": "Node.js on Docker",
-  "author": "First Last <first.last@example.com>",
-  "main": "server.js",
+  "description": "Einkaufsliste",
+  "main": "login.html",
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wi20023/Einkaufsliste.git"
+  },
+  "author": "Jana Kopsch, Katharina Lena Willig, Tijana Zivkovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wi20023/Einkaufsliste/issues"
+  },
+  "homepage": "https://github.com/wi20023/Einkaufsliste#readme",
   "dependencies": {
-    "express": "^4.17",
-    "mysql": "^2.18"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.7.3",
+    "uuid": "^8.3.2"
   }
 }
