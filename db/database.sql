@@ -134,7 +134,7 @@ ALTER TABLE `list3`
 ALTER TABLE `mainList`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
-------------------------Table user ----------------------------------------
+------------------------Table user - because LoginDB not works ----------------------------------------
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
