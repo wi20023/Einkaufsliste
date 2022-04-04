@@ -23,7 +23,7 @@
     <li><a href="login.html">Login</a></li>
   </ul>
 
-  <form id="form" action="#" method="get">
+  <form id="form" action="register" method="get">
     <h1>Registrierung</h1>
     <p>Neuen Account erstellen.</p>
     <p>TEST 30.03.2022</p>
@@ -32,27 +32,24 @@
     <div>
         <label for="username">Benutzername</label>
         <input id="username" type="text" placeholder="Benutzername" name="username" required>
-        <!-- <span id="usernameerror"></span> -->
     </div>
     <div>
         <label for="password">Passwort</label>
         <input id="password" type="password" placeholder="Passwort" name="password" required>
-        <!-- <span id="passworderror"></span> -->
     </div>
     <div>
       <label for="repeat_password">Passwort bestätigen</label>
-      <input id="repeat_password" type="password" placeholder="Passwort wiederholen" name="repeat_password" required>
-      <!-- <span id="repeat_passworderror"></span> -->
+      <input id="repeat_password" type="password" placeholder="Passwort wiederholen" name="repeat_password">
   </div>
 
   <button type="button" onclick="registration()">Registrieren</button>
-  
-  <div class="container signin">
-    <p>Sie haben bereits einen Account? <a href="login.html">Login</a>.</p>
-  </div>
 
   <div id="alert">
     <!-- Here will be the alerts displayed -->
+  </div>
+  
+  <div class="container signin">
+    <p>Sie haben bereits einen Account? <a href="login.html">Login</a>.</p>
   </div>
 
 </form>
@@ -67,27 +64,32 @@
             //Prüfung funktioniert noch nicht richtig!!!
             // HTTP request
             function registration() {
-                
+
                 //Error if username is blank
                 if (username.value === '' || username.value == null) {
-                    messages.push('Bitte Benutzername eingeben.');    
+                showErrorAlert('Bitte Benutzernamen eingeben.');  
                 } else
                 //Error if password is blank
                 if (password.value === '' || password.value == null) {
-                    //Error if password is < 5 digits
-                    if (password.value.length < 5) {
-                     messages.push('Bitte Passwort mit mindestens 5 Zeichen eingeben.');
-                    } else {
-                     messages.push('Bitte Passwort eingeben.');
-                 }
-             } 
-
-             if (repeat_password.value === '' || repeat_password.value == null || repeat_password.value !== password.value) {
-                 messages.push('Die Passwörter stimmen nicht überein.')
-             }
+                  showErrorAlert('Bitte Passwort eingeben.');
+                } else
+                //Error if repeat_password is blank
+                if (repeat_password.value === '' || repeat_password.value == null) {
+                  showErrorAlert('Bitte Passwort wiederholen.');
+                } else 
+                //Error if password is <5 digits
+                if (password.value.length < 5) {
+                  showErrorAlert('Bitte Passwort mit mindesten 5 Zeichen eingeben.');
+                } else 
+                //Error if password != repeat_password
+                if (password.value != repeat_password.value) {
+                  showErrorAlert('Die Passwörter stimmen nicht überein.');         
+                } else {
+    
+              // Post geht an EinkaufslisteDB und nicht an LoginDB!!!
               var xhr = new XMLHttpRequest();
                     // define the type POST to the url "../registry" - we are in 'static/registry'
-                    xhr.open("POST", "../database_user/user", true);
+                    xhr.open("POST", "../register", true);
                     // define that the content will be JSON (serialization)
                     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                     // prepare the structure of the message
@@ -119,7 +121,7 @@
                         }
                     };
                   }
-            
+                }           
 </script>
 </body>
 </html>
