@@ -1,10 +1,12 @@
 'use strict';
 
 const express = require('express');
-// var session = require('express-session');
-// var path = require('path');
-// // middleware
-// var bodyParser = require('body-parser');
+var session = require('express-session');
+var path = require('path');
+// middleware
+var bodyParser = require('body-parser');
+// Encrypt passwords
+const bcrypt = require('bcryptjs');
 
 
 // ###################### Database part ######################
@@ -72,8 +74,8 @@ const HOST = '0.0.0.0';
 var app = express();
 
 // Features for JSON Body
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
 //Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static/maniPage.html
 app.get('/', (req, res) => {
@@ -82,90 +84,56 @@ app.get('/', (req, res) => {
     res.redirect('/static/mainPage.html');
 });
 
+//###################### Login (LoginDB/database2, user) ######################
+app.use(session({
+	secret: '12345',
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Login GET Path - call it with: http://localhost:8080/static/login.html
 // Wird der Pfad benötigt?
-// app.get('/login.html', (req, res) => {
-//     res.redirect('/login.html');
-// });
-
-// Register GET Path - call it with: http://localhost:8080/static/register.html
-// Wird der Pfad benötigt?
-// app.get('/register.html', (req, res) => {
-//     res.redirect('/register.html');
-// });
-
-
-//###################### Login (LoginDB/database2, user) ######################
-// app.use(session({
-// 	secret: '12345',
-// 	resave: true,
-// 	saveUninitialized: true
-// }));
-
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.get('/login.html', (req, res) => {
+    res.redirect('/login.html');
+});
 
 // app.get('/', function(req, res) {
 // 	response.sendFile(path.join(__dirname + '/login.html'));
 // });
 
-// app.post('../login', function(req, res) {
-// 	var username = req.body.username;
-// 	var password = req.body.password;
-// 	if (username && password) {
-// 		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-// 			if (results.length > 0) {
-// 				req.session.loggedin = true;
-// 				req.session.username = username;
-// 				res.redirect('/index.html');
-// 			} else {
-// 				res.send('Benutzername oder Passwort nicht korrekt!');
-// 			}			
-// 			res.end();
-// 		});
-// 	} else {
-// 		res.send('Bitte Benutzername und Passwort eingeben!');
-// 		res.end();
-// 	}
-// });
+app.post('/login', function(req, res) {
+	var username = req.body.username;
+	var password = req.body.password;
+	if (username && password) {
+		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+			if (results.length > 0) {
+				req.session.loggedin = true;
+				req.session.username = username;
+				res.redirect('/index.html');
+			} else {
+				res.send('Benutzername oder Passwort nicht korrekt!');
+			}			
+			res.end();
+		});
+	} else {
+		res.send('Bitte Benutzername und Passwort eingeben!');
+		res.end();
+	}
+});
 
-// app.get('/index', function(req, res) {
-// 	if (req.session.loggedin) {
-// 		res.send('Willkommen zurück, ' + req.session.username + '!');
-// 	} else {
-// 		res.send('Bitte melde dich zuerst an!');
-// 	}
-// 	res.end();
-// });
+app.get('/index', function(req, res) {
+	if (req.session.loggedin) {
+		res.send('Willkommen zurück, ' + req.session.username + '!');
+	} else {
+		res.send('Bitte melde dich zuerst an!');
+	}
+	res.end();
+});
 
-// ###################### Database2 (LoginDB, user) ######################
-
-// GET path for database2
-app.post('/login', (req, res) => {
-        if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
-        var username = req.body.username;
-        var password = req.body.password;
-        console.log("Client send request with `username`: " + username + " ; password: " + password ); // <- log to server
-        connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(err, rows, fields) {
-        if (error) {
-            // we got an errror - inform the client
-            console.error(error); // <- log error in server
-            res.status(500).json(error); // <- send to client
-        } else {
-            // we got no error - send it to the client
-            console.log('Success answer from DB: ', results); // <- log results in console
-            res.status(200).json(results); // <- send it to client
-        }
-    });
-}
-    else {
-        console.error("Client send no correct data!")
-        // Set HTTP Status -> 400 is client error -> and send message
-        res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
-    }
-    });
-
-
+// ###################### Register (LoginDB/database2, user)  ######################
 
 // POST path for database2 - Register
 app.post('/register', (req, res) => {
@@ -176,10 +144,12 @@ app.post('/register', (req, res) => {
         // Get the content to local variables:
         var username = req.body.username;
         var password = req.body.password;
-        console.log("Client send database insert request with `username`: " + username + " ; password: " + password ); // <- log to server
-    
-        // Prevent SQL-Injection 
-        connection2.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, ?, ?, current_date());", [username, password], function (error, results, fields) {   
+        // Encrypt password!!!
+        const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
+        console.log("Client send database insert request with `username`: " + username + " ; password: " + hashedPassword ); // <- log to server
+
+        // Insert-Request to prevent SQL-Injection 
+        connection2.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, ?, ?, current_date());", [username, hashedPassword], function (error, results, fields) {   
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
