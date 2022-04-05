@@ -2,10 +2,12 @@
 
 const express = require('express');
 var session = require('express-session');
-var bodyParser = require('body-parser');
 var path = require('path');
+// middleware
+var bodyParser = require('body-parser');
 
-// Database
+
+// ###################### Database part ######################
 const mysql = require('mysql');
 
 // Database1 connection info for EinkaufslisteDB - used from environment variables
@@ -17,21 +19,8 @@ var dbInfo = {
     database: process.env.MYSQL_DATABASE
 };
 
-//Database2 connection info for LoginDB
-var dbInfo2 = {
-    connectionLimit : 50,
-    host: process.env.MYSQL_HOSTNAME2,
-    user: process.env.MYSQL_USER2,
-    password: process.env.MYSQL_PASSWORD2,
-    database: process.env.MYSQL_DATABASE2
-};
-
 var connection = mysql.createPool(dbInfo);
 console.log("Conecting to EinkaufslisteDB...");
-// connection.connect(); <- connect not required in connection pool
-
-var connection2 = mysql.createPool(dbInfo2);
-console.log("Conecting to LoginDB...");
 
 // Check the connection
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
@@ -47,6 +36,19 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     }
 });
 
+//Database2 connection info for LoginDB
+var dbInfo2 = {
+    connectionLimit : 50,
+    host: process.env.MYSQL_HOSTNAME2,
+    user: process.env.MYSQL_USER2,
+    password: process.env.MYSQL_PASSWORD2,
+    database: process.env.MYSQL_DATABASE2
+};
+
+var connection2 = mysql.createPool(dbInfo2);
+console.log("Conecting to LoginDB...");
+
+// Check the connection
 connection2.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error; // <- this will throw the error and exit normally
     // check the solution - should be 2
@@ -60,6 +62,7 @@ connection2.query('SELECT 1 + 1 AS solution', function (error, results, fields) 
     }
 });
 
+// ###################### Database part end ######################
 
 // Constants
 const PORT = process.env.PORT || 8080;
@@ -69,72 +72,75 @@ const HOST = '0.0.0.0';
 var app = express();
 
 // Features for JSON Body
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
-//Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static
+//Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static/maniPage.html
 app.get('/', (req, res) => {
     console.log("Got a request and redirect it to the static page");
     // redirect will send the client to another path / route. In this case to the static route.
     res.redirect('/static/mainPage.html');
 });
 
-// Login GET Path - call it with: http://localhost:8080/login.html
+// Login GET Path - call it with: http://localhost:8080/static/login.html
 // Wird der Pfad benötigt?
 // app.get('/login.html', (req, res) => {
 //     res.redirect('/login.html');
 // });
 
-// Register GET Path - call it with: http://localhost:8080/register.html
+// Register GET Path - call it with: http://localhost:8080/static/register.html
 // Wird der Pfad benötigt?
 // app.get('/register.html', (req, res) => {
 //     res.redirect('/register.html');
 // });
 
 
-//Login - Error: Cannot find module 'express-session'
+//###################### Login (LoginDB/database2, user) ######################
 app.use(session({
 	secret: '12345',
 	resave: true,
 	saveUninitialized: true
 }));
 
-app.get('/', function(request, response) {
-	response.sendFile(path.join('/login.html'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.get('/', function(req, res) {
+	response.sendFile(path.join(__dirname + '/login.html'));
 });
 
-app.post('/login', function(request, response) {
-	var username = request.body.username;
-	var password = request.body.password;
+app.post('/login', function(req, res) {
+	var username = req.body.username;
+	var password = req.body.password;
 	if (username && password) {
 		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			if (results.length > 0) {
-				request.session.loggedin = true;
-				request.session.username = username;
-				response.redirect('/mainPage.html');
+				req.session.loggedin = true;
+				req.session.username = username;
+				res.redirect('/index');
 			} else {
-				response.send('Benutzername oder Passwort nicht korrekt!');
+				res.send('Benutzername oder Passwort nicht korrekt!');
 			}			
-			response.end();
+			res.end();
 		});
 	} else {
-		response.send('Bitte Benutzername und Passwort eingeben!');
-		response.end();
+		res.send('Bitte Benutzername und Passwort eingeben!');
+		res.end();
 	}
 });
 
-app.get('/mainPage', function(request, response) {
-	if (request.session.loggedin) {
-		response.send('Willkommen zurück, ' + request.session.username + '!');
-	} else {
-		response.send('Bitte melde dich zuerst an!');
-	}
-	response.end();
-});
+// app.get('/index', function(req, res) {
+// 	if (req.session.loggedin) {
+// 		res.send('Willkommen zurück, ' + req.session.username + '!');
+// 	} else {
+// 		res.send('Bitte melde dich zuerst an!');
+// 	}
+// 	res.end();
+// });
 
-// ###################### LoginDB (user) ######################
+// ###################### Register (LoginDB, user) ######################
 
-// GET path for database
+// GET path for database2
 // app.get('/login', (req, res) => {
 //     // Prepare the get query
 //     // connection.query("SELECT * FROM `user` ;", function (error, results, fields) {
@@ -156,7 +162,7 @@ app.get('/mainPage', function(request, response) {
 // });
 
 
-// POST path for database - Register
+// POST path for database2 - Register
 app.post('/register', (req, res) => {
     // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
     // it will be added to the database with a query.
