@@ -29,12 +29,35 @@
         
         <!-- <h1>Willkommen zurück "Name"</h1>   -->
 
-        <!-- Link to the Database Sample -->
+        <!-- Link to the Database EinkaufslisteDB, Table mainList -->
         <div class="alert alert-info" role="alert">
         <h2>Unsere Liste</h2><br>
         <a href="mainList.html">Unsere Einkaufsliste</a><br>
-        <a href="Teilen.html">Teilen</a>
-        </div>
+        
+        <!-- Share-Button for mainList -->
+        <p><button>Teile unsere Einkaufsliste</button></p>
+            <p class="result"></p>
+            <script>
+            let shareData = {
+                title: 'Einkausliste',
+                text: 'Teile die Einkaufsliste mit anderen',
+                url: 'http://localhost:8080/static/mainList.html',
+            }
+
+            const btn = document.querySelector('button');
+            const resultPara = document.querySelector('.result');
+
+            btn.addEventListener('click', () => {
+                navigator.share(shareData)
+                .then(() =>
+                    resultPara.textContent = 'Einkaufsliste erfolgreich geteilt!'
+                )
+                .catch((e) =>
+                    resultPara.textContent = 'Error: ' + e
+                )
+            });
+            </script>
+                </div>
 
         <div class="alert alert-info" role="alert">
         <h4>Weitere Listen</h4>
@@ -98,27 +121,6 @@
             }
 
             
-
-        <div class="container">
-                <button class="share-btn">
-            <i class="fas fa-share-alt"></i>
-                </button>
-        <div class="share-options">
-            <p class="title">share</p>
-            <div class="social-media">
-                <button class="social-media-btn"><i class="far fa-folder-open"></i></button>
-                <button class="social-media-btn"><i class="fab fa-whatsapp"></i></button>
-                <button class="social-media-btn"><i class="fab fa-instagram"></i></button>
-                <button class="social-media-btn"><i class="fab fa-twitter"></i></button>
-                <button class="social-media-btn"><i class="fab fa-facebook-f"></i></button>
-                <button class="social-media-btn"><i class="fab fa-linkedin-in"></i></button>
-            </div>
-            <div class="link-container">
-                <p class="link">https://example.com/share</p>
-                <button class="copy-btn">copy</button>
-            </div>
-        </div>
-    </div>
         </script>
 
     </main><!-- /.container -->
