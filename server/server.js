@@ -109,7 +109,7 @@ app.get('/', function(req, res) {
 	response.sendFile(path.join(__dirname + '/login.html'));
 });
 
-app.post('/login', function(req, res) {
+app.post('/auth', function(req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
 	if (username && password) {
@@ -117,7 +117,7 @@ app.post('/login', function(req, res) {
 			if (results.length > 0) {
 				req.session.loggedin = true;
 				req.session.username = username;
-				res.redirect('/index');
+				res.redirect('/index.html');
 			} else {
 				res.send('Benutzername oder Passwort nicht korrekt!');
 			}			
