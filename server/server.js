@@ -1,10 +1,10 @@
 'use strict';
 
 const express = require('express');
-var session = require('express-session');
-var path = require('path');
-// middleware
-var bodyParser = require('body-parser');
+// var session = require('express-session');
+// var path = require('path');
+// // middleware
+// var bodyParser = require('body-parser');
 
 
 // ###################### Database part ######################
@@ -72,8 +72,8 @@ const HOST = '0.0.0.0';
 var app = express();
 
 // Features for JSON Body
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 //Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static/maniPage.html
 app.get('/', (req, res) => {
@@ -96,38 +96,38 @@ app.get('/', (req, res) => {
 
 
 //###################### Login (LoginDB/database2, user) ######################
-app.use(session({
-	secret: '12345',
-	resave: true,
-	saveUninitialized: true
-}));
+// app.use(session({
+// 	secret: '12345',
+// 	resave: true,
+// 	saveUninitialized: true
+// }));
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
-app.get('/', function(req, res) {
-	response.sendFile(path.join(__dirname + '/login.html'));
-});
+// app.get('/', function(req, res) {
+// 	response.sendFile(path.join(__dirname + '/login.html'));
+// });
 
-app.post('/auth', function(req, res) {
-	var username = req.body.username;
-	var password = req.body.password;
-	if (username && password) {
-		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			if (results.length > 0) {
-				req.session.loggedin = true;
-				req.session.username = username;
-				res.redirect('/index.html');
-			} else {
-				res.send('Benutzername oder Passwort nicht korrekt!');
-			}			
-			res.end();
-		});
-	} else {
-		res.send('Bitte Benutzername und Passwort eingeben!');
-		res.end();
-	}
-});
+// app.post('../login', function(req, res) {
+// 	var username = req.body.username;
+// 	var password = req.body.password;
+// 	if (username && password) {
+// 		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+// 			if (results.length > 0) {
+// 				req.session.loggedin = true;
+// 				req.session.username = username;
+// 				res.redirect('/index.html');
+// 			} else {
+// 				res.send('Benutzername oder Passwort nicht korrekt!');
+// 			}			
+// 			res.end();
+// 		});
+// 	} else {
+// 		res.send('Bitte Benutzername und Passwort eingeben!');
+// 		res.end();
+// 	}
+// });
 
 // app.get('/index', function(req, res) {
 // 	if (req.session.loggedin) {
@@ -138,28 +138,33 @@ app.post('/auth', function(req, res) {
 // 	res.end();
 // });
 
-// ###################### Register (LoginDB, user) ######################
+// ###################### Database2 (LoginDB, user) ######################
 
 // GET path for database2
-// app.get('/login', (req, res) => {
-//     // Prepare the get query
-//     // connection.query("SELECT * FROM `user` ;", function (error, results, fields) {
-//         // if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
-//         var username = req.body.username;
-//         var password = req.body.password;
-//         connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(err, rows, fields) {
-//         if (error) {
-//             // we got an errror - inform the client
-//             console.error(error); // <- log error in server
-//             res.status(500).json(error); // <- send to client
-//         } else {
-//             // we got no error - send it to the client
-//             console.log('Success answer from DB: ', results); // <- log results in console
-//             // INFO: Here could be some code to modify the result
-//             res.status(200).json(results); // <- send it to client
-//         }
-//     });
-// });
+app.post('/login', (req, res) => {
+        if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
+        var username = req.body.username;
+        var password = req.body.password;
+        console.log("Client send request with `username`: " + username + " ; password: " + password ); // <- log to server
+        connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(err, rows, fields) {
+        if (error) {
+            // we got an errror - inform the client
+            console.error(error); // <- log error in server
+            res.status(500).json(error); // <- send to client
+        } else {
+            // we got no error - send it to the client
+            console.log('Success answer from DB: ', results); // <- log results in console
+            res.status(200).json(results); // <- send it to client
+        }
+    });
+}
+    else {
+        console.error("Client send no correct data!")
+        // Set HTTP Status -> 400 is client error -> and send message
+        res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
+    }
+    });
+
 
 
 // POST path for database2 - Register
@@ -173,12 +178,8 @@ app.post('/register', (req, res) => {
         var password = req.body.password;
         console.log("Client send database insert request with `username`: " + username + " ; password: " + password ); // <- log to server
     
-        connection2.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, '" + username + "', '" + password + "', current_date());", function (error, results, fields) {
-        // SQL-Injection vermeiden:  
-        // connection.query("INSERT INTO 'user' (`id`, `user`, `password`, `created_at`) VALUES (NULL, '" + ? + "', '" + ? + "', current_date());") , [
-        // req.body.user,
-        // req.body.password
-        //], function (error, results, fields) {       
+        // Prevent SQL-Injection 
+        connection2.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, ?, ?, current_date());", [username, password], function (error, results, fields) {   
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -197,7 +198,7 @@ app.post('/register', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
     }
 });
-// ###################### DATABASE PART END (user) ######################
+// ###################### DATABASE2 PART END (user) ######################
 
 
 // ###################### DATABASE PART (mainList) ######################
@@ -251,10 +252,8 @@ app.post('/mainList', (req, res) => {
         var quantity = req.body.quantity;
         var unit = req.body.unit;
         console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit ); // <- log to server
-    
-        // Actual executing the query. Please keep in mind that this is for learning and education.
-        // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_date());", function (error, results, fields) {
+
+        connection.query("INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[title, quantity, unit], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -273,33 +272,6 @@ app.post('/mainList', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 });  
-            
-
-            // Prevent SQL-Injection:
-    //         connection.query("INSERT INTO 'mainList' (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '?', '?', '?', current_date());") , [
-    //         req.body.title,
-    //         req.body.quantity,
-    //         req.body.unit
-    //         ], function (error, results, fields) {       
-    //             if (error) {
-    //                 // we got an errror - inform the client
-    //                 console.error(error); // <- log error in server
-    //                 res.status(500).json(error); // <- send to client
-    //             } else {
-    //                 // Everything is fine with the query
-    //                 console.log('Success answer: ', results); // <- log results in console
-    //                 // INFO: Here can be some checks of modification of the result
-    //                 res.status(200).json(results); // <- send it to client
-    //             }
-    //         };
-    //     } else {
-    //         // There is nobody with a title nor description
-    //         console.error("Client send no correct data!")
-    //         // Set HTTP Status -> 400 is client error -> and send message
-    //         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
-    //     }
-    // });
-
 // ###################### DATABASE PART END (mainList) ######################
 
 
@@ -357,7 +329,7 @@ app.post('/list2', (req, res) => {
         var unit = req.body.unit;
         console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
 
-        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_date());", function (error, results, fields) {     
+        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[title, quantity, unit], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -432,7 +404,7 @@ app.post('/list3', (req, res) => {
         var unit = req.body.unit;
         console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
     
-        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, '" + title + "', '" + quantity + "', '" + unit + "', current_date());", function (error, results, fields) {
+        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[title, quantity, unit], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
