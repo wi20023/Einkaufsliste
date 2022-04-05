@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: host2
--- Erstellungszeit: 17. Mrz 2022 um 15:44
+-- Erstellungszeit: 05. Apr 2022 um 10:19
 -- Server-Version: 10.7.3-MariaDB-1:10.7.3+maria~focal
 -- PHP-Version: 8.0.15
 
@@ -38,10 +38,10 @@ CREATE TABLE `user` (
 -- Daten für Tabelle `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`) VALUES
-(1, 'Jana', '12345'),
-(2, 'Katharina', '12345'),
-(3, 'Tijana', '12345');
+INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES
+(1, 'Jana', '$2a$10$y4/fBHL0roD22rxlfhFbw.rLslymKg1iIC/pVIqWM3roorVHFXvS6', '2022-04-05'),
+(2, 'Katharina', '$2a$10$tmvkhjdgC8wcEgDCOIXZZupkAx90gZ1s9qYePcqoFsfqON4jY9CN.', '2022-04-05'),
+(3, 'Tijana', '$2a$10$8R2Y45Sufw03C7W6LDfTDO8Wg2loRBxCndl9hddsWHVsH70ScdF.C', '2022-04-05');
 
 --
 -- Indizes der exportierten Tabellen
