@@ -1,9 +1,9 @@
 'use strict';
 
 const express = require('express');
-// var session = require('express-session');
-// var bodyParser = require('body-parser');
-// var path = require('path');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var path = require('path');
 
 // Database
 const mysql = require('mysql');
@@ -93,21 +93,21 @@ app.get('/', (req, res) => {
 
 
 //Login - Error: Cannot find module 'express-session'
-// app.use(session({
-// 	secret: '12345',
-// 	resave: true,
-// 	saveUninitialized: true
-// }));
+app.use(session({
+	secret: '12345',
+	resave: true,
+	saveUninitialized: true
+}));
 
-// app.get('/', function(request, response) {
-// 	response.sendFile(path.join('/login.html'));
-// });
+app.get('/', function(request, response) {
+	response.sendFile(path.join('/login.html'));
+});
 
 app.post('/login', function(request, response) {
 	var username = request.body.username;
 	var password = request.body.password;
 	if (username && password) {
-		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
 				request.session.username = username;
@@ -141,7 +141,7 @@ app.get('/mainPage', function(request, response) {
 //         // if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
 //         var username = req.body.username;
 //         var password = req.body.password;
-//         connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(err, rows, fields) {
+//         connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(err, rows, fields) {
 //         if (error) {
 //             // we got an errror - inform the client
 //             console.error(error); // <- log error in server
@@ -167,9 +167,7 @@ app.post('/register', (req, res) => {
         var password = req.body.password;
         console.log("Client send database insert request with `username`: " + username + " ; password: " + password ); // <- log to server
     
-        // Actual executing the query. Please keep in mind that this is for learning and education.
-        // In real production environment, this has to be secure for SQL injection!
-        connection.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, '" + username + "', '" + password + "', current_date());", function (error, results, fields) {
+        connection2.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, '" + username + "', '" + password + "', current_date());", function (error, results, fields) {
         // SQL-Injection vermeiden:  
         // connection.query("INSERT INTO 'user' (`id`, `user`, `password`, `created_at`) VALUES (NULL, '" + ? + "', '" + ? + "', current_date());") , [
         // req.body.user,
