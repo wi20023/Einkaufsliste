@@ -1,9 +1,20 @@
 version: '3.3'
 services:
-  server:
+  balancer:
+   build: balancer
+   ports:
+    - 8080:8080
+   restart: always
+   depends_on:
+   - server1
+   - server2
+   links:
+   - server1
+   - server2
+  server1:
     build: server
     ports:
-      - "8080:8080"
+      - "8081:8080"
     restart: always
     environment:
       MYSQL_DATABASE: EinkaufslisteDB
@@ -20,6 +31,26 @@ services:
     depends_on:
       - host1
       - host2
+  server2:
+    build: server
+    ports:
+      - "8082:8080"
+    restart: always
+    environment:
+      MYSQL_DATABASE: EinkaufslisteDB
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: pass1
+      MYSQL_HOSTNAME: host1
+      MYSQL_DATABASE2: LoginDB
+      MYSQL_USER2: user2
+      MYSQL_PASSWORD2: pass2
+      MYSQL_HOSTNAME2: host2
+    links:
+      - host1
+      - host2
+    depends_on:
+      - host1
+      - host2      
   host1:
     # Use of a modified datbase in 'db'-folder.
     # See README.md for more information.
