@@ -149,7 +149,7 @@ app.post('/register', (req, res) => {
         console.log("Client send database insert request with `username`: " + username + " ; password: " + hashedPassword ); // <- log to server
 
         // Insert-Request to prevent SQL-Injection 
-        connection2.query("INSERT INTO `user` (`id`, `username`, `password`, `created_at`) VALUES (NULL, ?, ?, current_date());", [username, hashedPassword], function (error, results, fields) {   
+        connection2.query("INSERT INTO `user` (`uuid`, `username`, `password`, `created_at`) VALUES (NULL, ?, ?, current_date());", [username, hashedPassword], function (error, results, fields) {   
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
