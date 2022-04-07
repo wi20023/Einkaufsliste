@@ -27,17 +27,17 @@
   <div class="login">
       <h1>Login</h1>
       <p>Bitte melden Sie sich mit Ihren Login-Daten an.</p>
-      <p>TEST 05.04.2022</p>
+      <p>TEST 07.04.2022</p>
       <hr>
 
-      <form id="form" action="auth" method="post">
-				<input type="text" name="username" placeholder="Benutzername" id="username" required>
-				<input type="password" name="password" placeholder="Passwort" id="password" required>
+      <form uuid="form" action="../login" method="post">
+				<input type="text" name="username" placeholder="Benutzername" uuid="username" required>
+				<input type="password" name="password" placeholder="Passwort" uuid="password" required>
         <button><input type="submit" value="login"></button>
 			</form>
       </div>
 
-    <div id="alert">
+    <div uuid="alert">
       <!-- Here will be the alerts displayed -->
     </div>
 

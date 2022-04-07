@@ -23,28 +23,28 @@
     <li><a href="login.html">Login</a></li>
   </ul>
 
-  <form uuid="form" action="register" method="get">
+  <form id="form" action="register" method="get">
     <h1>Registrierung</h1>
     <p>Neuen Account erstellen.</p>
-    <p>TEST 30.03.2022</p>
+    <p>TEST 07.04.2022</p>
     <hr>
 
     <div>
         <label for="username">Benutzername</label>
-        <input uuid="username" type="text" placeholder="Benutzername" name="username" required>
+        <input id="username" type="text" placeholder="Benutzername" name="username" required>
     </div>
     <div>
         <label for="password">Passwort</label>
-        <input uuid="password" type="password" placeholder="Passwort" name="password" required>
+        <input id="password" type="password" placeholder="Passwort" name="password" required>
     </div>
     <div>
       <label for="repeat_password">Passwort bestätigen</label>
-      <input uuid="repeat_password" type="password" placeholder="Passwort wiederholen" name="repeat_password">
+      <input id="repeat_password" type="password" placeholder="Passwort wiederholen" name="repeat_password">
   </div>
 
   <button type="button" onclick="registration()">Registrieren</button>
 
-  <div uuid="alert">
+  <div id="alert">
     <!-- Here will be the alerts displayed -->
   </div>
   
@@ -61,7 +61,6 @@
                 document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
             }
             
-            //Prüfung funktioniert noch nicht richtig!!!
             // HTTP request
             function registration() {
 
@@ -86,8 +85,7 @@
                   showErrorAlert('Die Passwörter stimmen nicht überein.');         
                 } else {
     
-              // Post geht an EinkaufslisteDB und nicht an LoginDB!!!
-              var xhr = new XMLHttpRequest();
+                  var xhr = new XMLHttpRequest();
                     // define the type POST to the url "../registry" - we are in 'static/registry'
                     xhr.open("POST", "../register", true);
                     // define that the content will be JSON (serialization)
