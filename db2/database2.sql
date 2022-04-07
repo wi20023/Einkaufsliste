@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `user` (
-  `uuid` int(11) NOT NULL,
+  `uuid` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `created_at` date NOT NULL DEFAULT current_timestamp()
@@ -51,7 +51,8 @@ INSERT INTO `user` (`uuid`, `username`, `password`, `created_at`) VALUES
 -- Indizes für die Tabelle `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`uuid`);
+  ADD PRIMARY KEY (`uuid`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
@@ -60,8 +61,8 @@ ALTER TABLE `user`
 --
 -- AUTO_INCREMENT für Tabelle `user`
 --
-ALTER TABLE `user`
-  MODIFY `uuid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+-- ALTER TABLE `user`
+--   MODIFY `uuid` int(11) NOT NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
