@@ -1,11 +1,12 @@
 'use strict';
 
 const express = require('express');
+//required for Login
 var session = require('express-session');
 var path = require('path');
 // middleware
 var bodyParser = require('body-parser');
-// Encrypt passwords
+// Hash passwords
 const bcrypt = require('bcryptjs');
 
 
@@ -74,13 +75,12 @@ const HOST = '0.0.0.0';
 var app = express();
 
 // Features for JSON Body
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-//Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static/maniPage.html
+//Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static/mainPage.html
 app.get('/', (req, res) => {
     console.log("Got a request and redirect it to the static page");
-    // redirect will send the client to another path / route. In this case to the static route.
     res.redirect('/static/mainPage.html');
 });
 
@@ -91,65 +91,95 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
 
 // Login GET Path - call it with: http://localhost:8080/static/login.html
 // Wird der Pfad benötigt?
-app.get('/login.html', (req, res) => {
-    res.redirect('/login.html');
-});
+// app.get('/login.html', (req, res) => {
+//     res.redirect('/login.html');
+// });
 
 // app.get('/', function(req, res) {
 // 	response.sendFile(path.join(__dirname + '/login.html'));
 // });
 
+// ###################### Login (LoginDB/database2, user)  ######################
 app.post('/login', function(req, res) {
+    //Data from Login-Form
 	var username = req.body.username;
 	var password = req.body.password;
+    
 	if (username && password) {
-		connection2.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
-			if (results.length > 0) {
-				req.session.loggedin = true;
-				req.session.username = username;
-				res.redirect('/index.html');
-			} else {
-				res.send('Benutzername oder Passwort nicht korrekt!');
-			}			
-			res.end();
+        // // Prepare the select query and prevent SQL-Injection: 
+		connection2.query('SELECT * FROM user WHERE username = ?', [
+            username
+            ], function(error, results, fields) {
+			console.log(results);
+            // if there is no entry in database
+            if (results.length == 0) {
+                // we got an errror - inform the client
+                // console.error(error); // <- log error in server
+                // res.status(500).json(error); // <- send to client
+                // If username does not exist redirect to login form
+                res.redirect('/static/login.html');
+                res.send('Der eingegebene Benutzername ist nicht korrekt!');
+            } else {
+            // get password for result
+            var checkpass = results[0].password;
+            //Compare send password and hashed password
+            const doesPasswordMatch = bcrypt.compareSync(password, checkpass);
+            
+                // Check if user sent the correct password for the username      
+                if(doesPasswordMatch == true && results.length > 0) {
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    res.redirect('/static/index.html');
+			// } else {
+            //     // we got an errror - inform the client
+            //     console.error(error); // <- log error in server
+            //     res.status(500).json(error); // <- send to client
+            //     // If username does not exist or password is wrong, redirect to login form
+            //     res.redirect('/static/login.html');
+			// 	// res.send('Das eingegebene Passwort ist nicht korrekt!');
+			}
+        }						
 		});
-	} else {
-		res.send('Bitte Benutzername und Passwort eingeben!');
-		res.end();
-	}
+        }
+	// } else {
+    //     console.error("Client send no correct data!")
+    //     // Set HTTP Status -> 400 is client error -> and send message
+    //     res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
+	// }
 });
 
-app.get('/index', function(req, res) {
-	if (req.session.loggedin) {
-		res.send('Willkommen zurück, ' + req.session.username + '!');
-	} else {
-		res.send('Bitte melde dich zuerst an!');
-	}
-	res.end();
-});
+
+// app.get('/static/index.html', function(req, res) {
+// 	if (req.session.loggedin) {
+// 		res.send('Willkommen zurück, ' + req.session.username + '!');
+// 	} else {
+// 		res.send('Bitte melde dich zuerst an!');
+// 	}
+// 	res.end();
+// });
+
+// ###################### Login end (LoginDB/database2, user)  ######################
 
 // ###################### Register (LoginDB/database2, user)  ######################
 
 // POST path for database2 - Register
 app.post('/register', (req, res) => {
-    // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
-    // it will be added to the database with a query.
     if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
-        // The content looks good, so move on
-        // Get the content to local variables:
         var username = req.body.username;
         var password = req.body.password;
-        // Encrypt password!!!
+        // Hash password
         const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
         console.log("Client send database insert request with `username`: " + username + " ; password: " + hashedPassword ); // <- log to server
 
-        // Insert-Request to prevent SQL-Injection 
-        connection2.query("INSERT INTO `user` (`uuid`, `username`, `password`, `created_at`) VALUES (NULL, ?, ?, current_date());", [username, hashedPassword], function (error, results, fields) {   
+        // Prepare the insert Request and prevent SQL-Injection 
+        connection2.query("INSERT INTO `user` (`uuid`, `username`, `password`, `created_at`) VALUES (UUID(), ?, ?, current_date());", [
+            username, hashedPassword
+            ], function (error, results, fields) {   
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -157,7 +187,6 @@ app.post('/register', (req, res) => {
             } else {
                 // Everything is fine with the query
                 console.log('Success answer: ', results); // <- log results in console
-                // INFO: Here can be some checks of modification of the result
                 res.status(200).json(results); // <- send it to client
             }
         });
@@ -168,11 +197,11 @@ app.post('/register', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
     }
 });
-// ###################### DATABASE2 PART END (user) ######################
+// ###################### Register (LoginDB/database2, user) ######################
 
 
 // ###################### DATABASE PART (mainList) ######################
-// GET path for database
+// GET path for database mainList
 app.get('/mainList', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
@@ -190,13 +219,13 @@ app.get('/mainList', (req, res) => {
     });
 });
 
-// DELETE path for database
+// DELETE path for database mainList
 app.delete('/mainList/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
     // Actual executing the query to delete it from the server
-    // Prevent SQL-Injection:  
+    // Prepare the delete query and prevent SQL-Injection:  
      connection.query("DELETE FROM `mainList` WHERE `mainList`.`id` = ?", [
      req.params.id
     ], function (error, results, fields) {  
@@ -207,13 +236,12 @@ app.delete('/mainList/:id', (req, res) => {
         } else {
             // Everything is fine with the query
             console.log('Success answer: ', results); // <- log results in console
-            // INFO: Here can be some checks of modification of the result
             res.status(200).json(results); // <- send it to client
         }
     });
 });
 
-// POST path for database insert
+// POST path for database insert into mainList
 app.post('/mainList', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
 
@@ -223,7 +251,10 @@ app.post('/mainList', (req, res) => {
         var unit = req.body.unit;
         console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit ); // <- log to server
 
-        connection.query("INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[title, quantity, unit], function (error, results, fields) {
+        // Prepare the insert query and prevent SQL-Injection: 
+        connection.query("INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
+            title, quantity, unit
+            ], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -231,7 +262,6 @@ app.post('/mainList', (req, res) => {
             } else {
                 // Everything is fine with the query
                 console.log('Success answer: ', results); // <- log results in console
-                // INFO: Here can be some checks of modification of the result
                 res.status(200).json(results); // <- send it to client
             }
             });
@@ -246,7 +276,7 @@ app.post('/mainList', (req, res) => {
 
 
 // ###################### DATABASE PART (list2) ######################
-// GET path for database
+// GET path for database list2
 app.get('/list2', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
@@ -258,19 +288,18 @@ app.get('/list2', (req, res) => {
         } else {
             // we got no error - send it to the client
             console.log('Success answer from DB: ', results); // <- log results in console
-            // INFO: Here could be some code to modify the result
             res.status(200).json(results); // <- send it to client
         }
     });
 });
 
-// DELETE path for database
+// DELETE path for database list2
 app.delete('/list2/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
     // Actual executing the query to delete it from the server
-    // Prevent SQL-Injection: 
+    // Prepare the delete query and prevent SQL-Injection: 
     connection.query("DELETE FROM `list2` WHERE `id` = ?", [
     req.params.id
     ], function (error, results, fields) {  
@@ -287,19 +316,20 @@ app.delete('/list2/:id', (req, res) => {
     });
 });
 
-// POST path for database
+// POST path for database list2
 app.post('/list2', (req, res) => {
-    // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
-    // it will be added to the database with a query.
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
-        // The content looks good, so move on
+       
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
         console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
 
-        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[title, quantity, unit], function (error, results, fields) {
+        // Prepare the insert query and prevent SQL-Injection: 
+        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
+            title, quantity, unit
+            ], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -339,13 +369,12 @@ app.get('/list3', (req, res) => {
     });
 });
 
-// DELETE path for database
+// DELETE path for database list3
 app.delete('/list3/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
-    // Actual executing the query to delete it from the server
-    // Prevent SQL-Injection: 
+    // Prepare the delete query and prevent SQL-Injection:  
     connection.query("DELETE FROM `list3` WHERE `id` = ?", [
         req.params.id
         ], function (error, results, fields) {  
@@ -362,19 +391,20 @@ app.delete('/list3/:id', (req, res) => {
     });
 });
 
-// POST path for database
+// POST path for database lis3
 app.post('/list3', (req, res) => {
-    // This will add a new row. So we're getting a JSON from the webbrowser which needs to be checked for correctness and later
-    // it will be added to the database with a query.
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
-        // The content looks good, so move on
+        
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
         console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
     
-        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[title, quantity, unit], function (error, results, fields) {
+        // Prepare the insert query and prevent SQL-Injection: 
+        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
+            title, quantity, unit
+            ], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
                 console.error(error); // <- log error in server
@@ -382,7 +412,6 @@ app.post('/list3', (req, res) => {
             } else {
                 // Everything is fine with the query
                 console.log('Success answer: ', results); // <- log results in console
-                // INFO: Here can be some checks of modification of the result
                 res.status(200).json(results); // <- send it to client
             }
         });
