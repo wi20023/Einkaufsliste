@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: host2
--- Erstellungszeit: 05. Apr 2022 um 10:19
+-- Erstellungszeit: 11. Apr 2022 um 10:10
 -- Server-Version: 10.7.3-MariaDB-1:10.7.3+maria~focal
 -- PHP-Version: 8.0.15
 
@@ -39,9 +39,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`uuid`, `username`, `password`, `created_at`) VALUES
-(1, 'Jana', '$2a$10$y4/fBHL0roD22rxlfhFbw.rLslymKg1iIC/pVIqWM3roorVHFXvS6', '2022-04-05'),
-(2, 'Katharina', '$2a$10$tmvkhjdgC8wcEgDCOIXZZupkAx90gZ1s9qYePcqoFsfqON4jY9CN.', '2022-04-05'),
-(3, 'Tijana', '$2a$10$8R2Y45Sufw03C7W6LDfTDO8Wg2loRBxCndl9hddsWHVsH70ScdF.C', '2022-04-05');
+('745cdc24-b97f-11ec-9939-0242ac140007', 'Jana', '$2a$10$bIBxtLSDiJzl0N6KWXeqceFDFDrz7dy4kjSo4DbPQ/BjLIJO98Z/q', '2022-04-11'),
+('7cc26007-b97f-11ec-9939-0242ac140007', 'Katharina', '$2a$10$gviTzjUGq6SQWT6nvL7JpO/LbFzM4LOVZq2YzKj0NWFV7TP06o5PC', '2022-04-11'),
+('850018a5-b97f-11ec-9939-0242ac140007', 'Tijana', '$2a$10$kaIpZWWiCR3y1bIJK2FaRusKSlNaYDnjCpM9tdKh5UESGJrg.WZRm', '2022-04-11');
 
 --
 -- Indizes der exportierten Tabellen
@@ -53,16 +53,6 @@ INSERT INTO `user` (`uuid`, `username`, `password`, `created_at`) VALUES
 ALTER TABLE `user`
   ADD PRIMARY KEY (`uuid`),
   ADD UNIQUE KEY `username` (`username`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `user`
---
--- ALTER TABLE `user`
---   MODIFY `uuid` int(11) NOT NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
