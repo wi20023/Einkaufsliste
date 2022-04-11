@@ -6,7 +6,7 @@ var session = require('express-session');
 var path = require('path');
 // middleware
 var bodyParser = require('body-parser');
-// Hash passwords
+// Hash passwords when new user will register
 const bcrypt = require('bcryptjs');
 
 
@@ -25,7 +25,7 @@ var dbInfo = {
 var connection = mysql.createPool(dbInfo);
 console.log("Conecting to EinkaufslisteDB...");
 
-// Check the connection
+// Check the connection for EinkauslisteDB
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error; // <- this will throw the error and exit normally
     // check the solution - should be 2
@@ -51,7 +51,7 @@ var dbInfo2 = {
 var connection2 = mysql.createPool(dbInfo2);
 console.log("Conecting to LoginDB...");
 
-// Check the connection
+// Check the connection for LoginDB
 connection2.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error; // <- this will throw the error and exit normally
     // check the solution - should be 2
@@ -78,33 +78,22 @@ var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Entrypoint - call it with: http://localhost:8080/ -> redirect you to http://localhost:8080/static/mainPage.html
+//Entrypoint - call it with: http://localhost:8081/ -> redirect you to http://localhost:8081/static/mainPage.html or
+//Entrypoint - call it with: http://localhost:8082/ -> redirect you to http://localhost:8082/static/mainPage.html
 app.get('/', (req, res) => {
     console.log("Got a request and redirect it to the static page");
     res.redirect('/static/mainPage.html');
 });
 
-//###################### Login (LoginDB/database2, user) ######################
+//###################### Login (LoginDB; user) ######################
 app.use(session({
 	secret: '12345',
 	resave: true,
-	saveUninitialized: true
+	saveUninitialized: true,
+    Cookie: {}
 }));
 
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-
-// Login GET Path - call it with: http://localhost:8080/static/login.html
-// Wird der Pfad benötigt?
-// app.get('/login.html', (req, res) => {
-//     res.redirect('/login.html');
-// });
-
-// app.get('/', function(req, res) {
-// 	response.sendFile(path.join(__dirname + '/login.html'));
-// });
-
-// ###################### Login (LoginDB/database2, user)  ######################
+// Poth path for database2 LoginDB, SELECT FROM user
 app.post('/login', function(req, res) {
     //Data from Login-Form
 	var username = req.body.username;
@@ -118,56 +107,48 @@ app.post('/login', function(req, res) {
 			console.log(results);
             // if there is no entry in database
             if (results.length == 0) {
+                req.session.loggedin = false;
                 // we got an errror - inform the client
-                // console.error(error); // <- log error in server
-                // res.status(500).json(error); // <- send to client
+                console.error(error); // <- log error in server
                 // If username does not exist redirect to login form
                 res.redirect('/static/login.html');
-                res.send('Der eingegebene Benutzername ist nicht korrekt!');
-            } else {
+                // res.send('Der eingegebene Benutzername ist nicht korrekt!');
+            } else if (results.length > 0) {
             // get password for result
             var checkpass = results[0].password;
             //Compare send password and hashed password
             const doesPasswordMatch = bcrypt.compareSync(password, checkpass);
-            
                 // Check if user sent the correct password for the username      
                 if(doesPasswordMatch == true && results.length > 0) {
+                    // store or access session data,
                     req.session.loggedin = true;
                     req.session.username = username;
+
+                    function SetName() {
+                        var name = req.session.username;
+                        '<%Session["name"] = "' + name + '"; %>';
+                        alert('<%=Session["name"] %>');
+                    }
+
+                    // If username and password does match, redirect to index.html
                     res.redirect('/static/index.html');
-			// } else {
-            //     // we got an errror - inform the client
-            //     console.error(error); // <- log error in server
-            //     res.status(500).json(error); // <- send to client
-            //     // If username does not exist or password is wrong, redirect to login form
-            //     res.redirect('/static/login.html');
-			// 	// res.send('Das eingegebene Passwort ist nicht korrekt!');
+			} else {
+                req.session.loggedin = false;
+                // we got an errror - inform the client
+                console.error(error); // <- log error in server
+                // If username does not exist or password is wrong, redirect to login form
+                res.redirect('/static/login.html');
 			}
         }						
 		});
         }
-	// } else {
-    //     console.error("Client send no correct data!")
-    //     // Set HTTP Status -> 400 is client error -> and send message
-    //     res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
-	// }
 });
 
+// ###################### Login end (LoginDB; user)  ######################
 
-// app.get('/static/index.html', function(req, res) {
-// 	if (req.session.loggedin) {
-// 		res.send('Willkommen zurück, ' + req.session.username + '!');
-// 	} else {
-// 		res.send('Bitte melde dich zuerst an!');
-// 	}
-// 	res.end();
-// });
+// ###################### Register (LoginDB; user)  ######################
 
-// ###################### Login end (LoginDB/database2, user)  ######################
-
-// ###################### Register (LoginDB/database2, user)  ######################
-
-// POST path for database2 - Register
+// POST path for database2 LoginDB, INSERT INTO user
 app.post('/register', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.username !== "undefined" && typeof req.body.password !== "undefined") {
         var username = req.body.username;
@@ -197,11 +178,11 @@ app.post('/register', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "username" and "password"' });
     }
 });
-// ###################### Register (LoginDB/database2, user) ######################
+// ###################### Register (LoginDB; user) ######################
 
 
-// ###################### DATABASE PART (mainList) ######################
-// GET path for database mainList
+// ###################### DATABASE PART (EinkaufslisteDB; mainList) ######################
+// GET path for database EinkaufslisteDB, SELECT FROM mainList
 app.get('/mainList', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
@@ -219,12 +200,11 @@ app.get('/mainList', (req, res) => {
     });
 });
 
-// DELETE path for database mainList
+// Path for database EinkaufslisteDB, DELETE FROM mainList
 app.delete('/mainList/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
-    // Actual executing the query to delete it from the server
     // Prepare the delete query and prevent SQL-Injection:  
      connection.query("DELETE FROM `mainList` WHERE `mainList`.`id` = ?", [
      req.params.id
@@ -241,7 +221,7 @@ app.delete('/mainList/:id', (req, res) => {
     });
 });
 
-// POST path for database insert into mainList
+// POST path for database EinkaufslisteDB, INSERT INTO mainList
 app.post('/mainList', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
 
@@ -272,11 +252,11 @@ app.post('/mainList', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 });  
-// ###################### DATABASE PART END (mainList) ######################
+// ###################### DATABASE PART END (EinkaufslisteDB; mainList) ######################
 
 
-// ###################### DATABASE PART (list2) ######################
-// GET path for database list2
+// ###################### DATABASE PART (EinkaufslisteDB; list2) ######################
+// GET path for database EinkaufslisteDB, SELECT FROM list2
 app.get('/list2', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
@@ -293,7 +273,7 @@ app.get('/list2', (req, res) => {
     });
 });
 
-// DELETE path for database list2
+// Path for database EinkaufslisteDB DELETE FROM list2
 app.delete('/list2/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
@@ -316,7 +296,7 @@ app.delete('/list2/:id', (req, res) => {
     });
 });
 
-// POST path for database list2
+// POST path for database EinkaufslisteDB, INSERT INTO list2
 app.post('/list2', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
        
@@ -348,10 +328,10 @@ app.post('/list2', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 });
-// ###################### DATABASE PART END (list2) ######################
+// ###################### DATABASE PART END (EinkaufslisteDB; list2) ######################
 
-// ###################### DATABASE PART (list3) ######################
-// GET path for database
+// ###################### DATABASE PART (EinkaufslisteDB; list3) ######################
+// GET path for database EinkaufslisteDB; SELECT from list3
 app.get('/list3', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
@@ -369,7 +349,7 @@ app.get('/list3', (req, res) => {
     });
 });
 
-// DELETE path for database list3
+// Path for database EinkaufslisteDB, DELETE FROM list3
 app.delete('/list3/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
@@ -391,7 +371,7 @@ app.delete('/list3/:id', (req, res) => {
     });
 });
 
-// POST path for database lis3
+// POST path for database EunkaufslisteDB, INSERT INTO list3
 app.post('/list3', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
         
@@ -423,7 +403,7 @@ app.post('/list3', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 });
-// ###################### DATABASE PART END (list3) ######################
+// ###################### DATABASE PART END (EinkaufslisteDB; list3) ######################
 
 
 // All requests to /static/... will be redirected to static files in the folder "public"
