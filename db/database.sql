@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `list2`
+-- Tabellenstruktur für Tabelle `Drogerieprodukte`
 --
 
-CREATE TABLE `list2` (
+CREATE TABLE `Drogerieprodukte` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
@@ -36,19 +36,19 @@ CREATE TABLE `list2` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `list2`
+-- Daten für Tabelle `Drogerieprodukte`
 --
 
-INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
+INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 (1, 'Shampoo', '1', 'Stück', '2022-03-17');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `list3`
+-- Tabellenstruktur für Tabelle `Pflegeprodukte`
 --
 
-CREATE TABLE `list3` (
+CREATE TABLE `Pflegeprodukte` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
@@ -57,10 +57,10 @@ CREATE TABLE `list3` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `list3`
+-- Daten für Tabelle `Pflegeprodukte`
 --
 
-INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
+INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 (1, 'Shampoo', '1', 'Stück', '2022-03-17'),
 (2, 'Bodylotion', '2', 'Stück', '2022-03-17'),
 (3, 'Duschgel', '5', 'Stück', '2022-03-17');
@@ -94,15 +94,15 @@ INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
 --
 
 --
--- Indizes für die Tabelle `list2`
+-- Indizes für die Tabelle `Drogerieprodukte`
 --
-ALTER TABLE `list2`
+ALTER TABLE `Drogerieprodukte`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `list3`
+-- Indizes für die Tabelle `Pflegeprodukte`
 --
-ALTER TABLE `list3`
+ALTER TABLE `Pflegeprodukte`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -117,15 +117,15 @@ ALTER TABLE `mainList`
 --
 
 --
--- AUTO_INCREMENT für Tabelle `list2`
+-- AUTO_INCREMENT für Tabelle `Drogerieprodukte`
 --
-ALTER TABLE `list2`
+ALTER TABLE `Drogerieprodukte`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT für Tabelle `list3`
+-- AUTO_INCREMENT für Tabelle `Pflegeprodukte`
 --
-ALTER TABLE `list3`
+ALTER TABLE `Pflegeprodukte`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
