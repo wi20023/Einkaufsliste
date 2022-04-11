@@ -255,12 +255,12 @@ app.post('/mainList', (req, res) => {
 // ###################### DATABASE PART END (EinkaufslisteDB; mainList) ######################
 
 
-// ###################### DATABASE PART (EinkaufslisteDB; list2) ######################
-// GET path for database EinkaufslisteDB, SELECT FROM list2
-app.get('/list2', (req, res) => {
+// ###################### DATABASE PART (EinkaufslisteDB; Drogerieprodukte) ######################
+// GET path for database EinkaufslisteDB, SELECT FROM Drogerieprodukte
+app.get('/Drogerieprodukte', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
-    connection.query("SELECT * FROM `list2`;", function (error, results, fields) {
+    connection.query("SELECT * FROM `Drogerieprodukte`;", function (error, results, fields) {
         if (error) {
             // we got an errror - inform the client
             console.error(error); // <- log error in server
@@ -273,14 +273,14 @@ app.get('/list2', (req, res) => {
     });
 });
 
-// Path for database EinkaufslisteDB DELETE FROM list2
-app.delete('/list2/:id', (req, res) => {
+// Path for database EinkaufslisteDB DELETE FROM Drogerieprodukte
+app.delete('/Drogerieprodukte/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
     // Actual executing the query to delete it from the server
     // Prepare the delete query and prevent SQL-Injection: 
-    connection.query("DELETE FROM `list2` WHERE `id` = ?", [
+    connection.query("DELETE FROM `Drogerieprodukte` WHERE `id` = ?", [
     req.params.id
     ], function (error, results, fields) {  
         if (error) {
@@ -296,8 +296,8 @@ app.delete('/list2/:id', (req, res) => {
     });
 });
 
-// POST path for database EinkaufslisteDB, INSERT INTO list2
-app.post('/list2', (req, res) => {
+// POST path for database EinkaufslisteDB, INSERT INTO Drogerieprodukte
+app.post('/Drogerieprodukte', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
        
         // Get the content to local variables:
@@ -307,7 +307,7 @@ app.post('/list2', (req, res) => {
         console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
 
         // Prepare the insert query and prevent SQL-Injection: 
-        connection.query("INSERT INTO `list2` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
+        connection.query("INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
             title, quantity, unit
             ], function (error, results, fields) {
             if (error) {
@@ -328,14 +328,14 @@ app.post('/list2', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 });
-// ###################### DATABASE PART END (EinkaufslisteDB; list2) ######################
+// ###################### DATABASE PART END (EinkaufslisteDB; Drogerieprodukte) ######################
 
-// ###################### DATABASE PART (EinkaufslisteDB; list3) ######################
-// GET path for database EinkaufslisteDB; SELECT from list3
-app.get('/list3', (req, res) => {
+// ###################### DATABASE PART (EinkaufslisteDB; Pflegeprodukte) ######################
+// GET path for database EinkaufslisteDB; SELECT from Pflegeprodukte
+app.get('/Pflegeprodukte', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
-    connection.query("SELECT * FROM `list3`;", function (error, results, fields) {
+    connection.query("SELECT * FROM `Pflegeprodukte`;", function (error, results, fields) {
         if (error) {
             // we got an errror - inform the client
             console.error(error); // <- log error in server
@@ -349,13 +349,13 @@ app.get('/list3', (req, res) => {
     });
 });
 
-// Path for database EinkaufslisteDB, DELETE FROM list3
-app.delete('/list3/:id', (req, res) => {
+// Path for database EinkaufslisteDB, DELETE FROM Pflegeprodukte
+app.delete('/Pflegeprodukte/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
     // Prepare the delete query and prevent SQL-Injection:  
-    connection.query("DELETE FROM `list3` WHERE `id` = ?", [
+    connection.query("DELETE FROM `Pflegeprodukte` WHERE `id` = ?", [
         req.params.id
         ], function (error, results, fields) {  
         if (error) {
@@ -371,8 +371,8 @@ app.delete('/list3/:id', (req, res) => {
     });
 });
 
-// POST path for database EunkaufslisteDB, INSERT INTO list3
-app.post('/list3', (req, res) => {
+// POST path for database EunkaufslisteDB, INSERT INTO Pflegeprodukte
+app.post('/Pflegeprodukte', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
         
         // Get the content to local variables:
@@ -382,7 +382,7 @@ app.post('/list3', (req, res) => {
         console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
     
         // Prepare the insert query and prevent SQL-Injection: 
-        connection.query("INSERT INTO `list3` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
+        connection.query("INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
             title, quantity, unit
             ], function (error, results, fields) {
             if (error) {
@@ -403,7 +403,7 @@ app.post('/list3', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 });
-// ###################### DATABASE PART END (EinkaufslisteDB; list3) ######################
+// ###################### DATABASE PART END (EinkaufslisteDB; Pflegeprodukte) ######################
 
 
 // All requests to /static/... will be redirected to static files in the folder "public"
