@@ -108,7 +108,7 @@ app.post('/login', function(req, res) {
             // if there is no entry in database
             if (results.length == 0) {
                 req.session.loggedin = false;
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 // If username does not exist redirect to login form
                 res.redirect('/static/login.html');
@@ -134,7 +134,7 @@ app.post('/login', function(req, res) {
                     res.redirect('/static/index.html');
 			} else {
                 req.session.loggedin = false;
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 // If username does not exist or password is wrong, redirect to login form
                 res.redirect('/static/login.html');
@@ -162,7 +162,7 @@ app.post('/register', (req, res) => {
             username, hashedPassword
             ], function (error, results, fields) {   
             if (error) {
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -210,7 +210,7 @@ app.delete('/mainList/:id', (req, res) => {
      req.params.id
     ], function (error, results, fields) {  
         if (error) {
-            // we got an errror - inform the client
+            // we got an error - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -237,7 +237,7 @@ app.post('/mainList', (req, res) => {
             title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -273,7 +273,7 @@ app.post('/update/:id', (req, res) => {
             ], function (error, results, fields) {
             
             if (error) {
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -300,7 +300,7 @@ app.get('/Drogerieprodukte', (req, res) => {
     // Prepare the get query
     connection.query("SELECT * FROM `Drogerieprodukte`;", function (error, results, fields) {
         if (error) {
-            // we got an errror - inform the client
+            // we got an error - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -322,7 +322,7 @@ app.delete('/Drogerieprodukte/:id', (req, res) => {
     req.params.id
     ], function (error, results, fields) {  
         if (error) {
-            // we got an errror - inform the client
+            // we got an error - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -350,7 +350,7 @@ app.post('/Drogerieprodukte', (req, res) => {
             title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -375,7 +375,7 @@ app.get('/Pflegeprodukte', (req, res) => {
     // Prepare the get query
     connection.query("SELECT * FROM `Pflegeprodukte`;", function (error, results, fields) {
         if (error) {
-            // we got an errror - inform the client
+            // we got an error - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -397,7 +397,7 @@ app.delete('/Pflegeprodukte/:id', (req, res) => {
         req.params.id
         ], function (error, results, fields) {  
         if (error) {
-            // we got an errror - inform the client
+            // we got an error - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
