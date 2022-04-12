@@ -26,31 +26,28 @@
   <form id="form" action="register" method="get">
     <h1>Registrierung</h1>
     <p>Neuen Account erstellen.</p>
-    <p>TEST 07.04.2022</p>
     <hr>
 
     <div>
-        <label for="username">Benutzername</label>
-        <input id="username" type="text" placeholder="Benutzername" name="username" required>
-    </div>
-    <div>
-        <label for="password">Passwort</label>
-        <input id="password" type="password" placeholder="Passwort" name="password" required>
-    </div>
-    <div>
+      <label for="username">Benutzername</label>
+      <input id="username" type="text" placeholder="Benutzername" name="username" required>
+
+      <label for="password">Passwort</label>
+      <input id="password" type="password" placeholder="Passwort" name="password" required>
+
       <label for="repeat_password">Passwort bestätigen</label>
       <input id="repeat_password" type="password" placeholder="Passwort wiederholen" name="repeat_password">
-  </div>
+    </div>
 
-  <button type="button" onclick="registration()">Registrieren</button>
+    <button type="button" onclick="registration()">Registrieren</button>
 
-  <div id="alert">
-    <!-- Here will be the alerts displayed -->
-  </div>
+    <div id="alert">
+      <!-- Here will be the alerts displayed -->
+    </div>
   
-  <div class="container signin">
-    <p>Sie haben bereits einen Account? <a href="login.html">Login</a>.</p>
-  </div>
+    <div class="container signin">
+      <p>Sie haben bereits einen Account? <a href="login.html">Login</a>.</p>
+    </div>
 
 </form>
 

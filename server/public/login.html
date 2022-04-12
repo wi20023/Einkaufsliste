@@ -24,17 +24,18 @@
     <li><a href="register.html">Registrierung</a></li>
   </ul>
     
-  <div class="login">
+  <div>
       <h1>Login</h1>
       <p>Bitte melden Sie sich mit Ihren Login-Daten an.</p>
       <hr>
+    </div>
 
-      <form uuid="form" action="../login" method="post">
-				<input type="text" name="username" placeholder="Benutzername" uuid="username" required>
-				<input type="password" name="password" placeholder="Passwort" uuid="password" required>
-        <button><input type="submit" value="login"></button>
+      <form id="form" action="../login" method="post">
+				<input type="text" name="username" placeholder="Benutzername" id="username" required>
+				<input type="password" name="password" placeholder="Passwort" id="password" required>
+        <button><input type="submit" value="Login"></button>
 			</form>
-      </div>
+
 
     <div uuid="alert">
       <!-- Here will be the alerts displayed -->

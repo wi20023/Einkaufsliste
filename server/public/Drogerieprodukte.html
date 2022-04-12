@@ -36,6 +36,7 @@
         </div>
 
         <figure class="gallery">
+            <button type="button" onclick="addToothpaste()"><img src="img/toothpaste.png" alt="Soap"></button>
             <button type="button" onclick="addSoap()"><img src="img/soap.png" alt="Soap"></button>
             <button type="button" onclick="addCreme()"><img src="img/creme.png" alt="Creme"></button>
             <button type="button" onclick="addParfume()"><img src="img/parfume.png" alt="Parfume"></button>
@@ -46,15 +47,16 @@
 
         <!-- Return-Button -->
         <input type="button" value="Zurück" onClick="javascript:history.back()">
-
-        <div class="alert">
+        <hr>
+        
+        <div class="alert alert-info" role="alert">
             <!-- print this page -->
             <a href="javascript:self.print()">Diese Seite drucken</a>
         </div>
 
         <script>
 
-function showErrorAlert(message) {
+            function showErrorAlert(message) {
                 // Write error alert:
                 document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
             }
@@ -74,13 +76,13 @@ function showErrorAlert(message) {
                         // Start the HTML table that should be displayed:
                         var txt = "<table class='table table-striped table-hover'>";
                         // add the table hader to it
-                        txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th></tr>"
+                        txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Bemerkung</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th></tr>"
                         // Go through each row and add it to the table
                         for (var x in row) {
-                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
+                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].note + "</td><td>" + row[x].unit + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
                         }
                         // Now add a input row to add a new entry:
-                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' value='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
+                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' placeholder='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' placeholder='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' placeholder='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' placeholder='Bemerkung'><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
                         // end of the table:
                         txt += "</table>"
 
@@ -129,12 +131,14 @@ function showErrorAlert(message) {
                 var data_to_send = {
                     title: "",
                     quantity: "",
-                    unit: ""
+                    unit: "",
+                    note: ""
                 }
                 // Load the title and description from the inputfields on this page:
                 data_to_send.title = document.getElementById("title").value;
                 data_to_send.quantity = document.getElementById("quantity").value;
                 data_to_send.unit = document.getElementById("unit").value;
+                data_to_send.note = document.getElementById("note").value;
                 // send the collected data as JSON
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -157,7 +161,43 @@ function showErrorAlert(message) {
                 };
             }
 
-                // The addWater()-function will add a row to the table.
+                // The addToothpaste()-function will add a row to the table.
+                function addToothpaste() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../Drogerieprodukte", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Zahnpasta",
+                    quantity: "1",
+                    unit: "Tube",
+                    note: ""
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+                // The addSoap()-function will add a row to the table.
                 function addSoap() {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
@@ -169,7 +209,8 @@ function showErrorAlert(message) {
                 var data_to_send = {
                     title: "Seife",
                     quantity: "1",
-                    unit: "Stück"
+                    unit: "Stück",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -192,8 +233,8 @@ function showErrorAlert(message) {
                 };
             }
 
-                // The addLemonade()-function will add a row to the table.
-                function addLCreme() {
+                // The addCreme()-function will add a row to the table.
+                function addCreme() {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
                 // define the type POST to the url "../database" - we are in 'static/database'
@@ -204,7 +245,8 @@ function showErrorAlert(message) {
                 var data_to_send = {
                     title: "Creme",
                     quantity: "1",
-                    unit: "Stück"
+                    unit: "Stück",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -227,7 +269,7 @@ function showErrorAlert(message) {
                 };
             }
 
-            // The addFruits()-function will add a row to the table.
+            // The addParfume()-function will add a row to the table.
             function addParfume() {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
@@ -239,7 +281,8 @@ function showErrorAlert(message) {
                 var data_to_send = {
                     title: "Parfum",
                     quantity: "1",
-                    unit: "1"
+                    unit: "1",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -262,7 +305,7 @@ function showErrorAlert(message) {
                 };
             }
 
-            // The addVegetables()-function will add a row to the table.
+            // The addNailPolish()-function will add a row to the table.
             function addNailPolish() {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
@@ -274,7 +317,8 @@ function showErrorAlert(message) {
                 var data_to_send = {
                     title: "Nagellack",
                     quantity: "1",
-                    unit: "Stück"
+                    unit: "Stück",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -297,7 +341,7 @@ function showErrorAlert(message) {
                 };
             }
 
-            // The addRow()-function will add a row to the table. It will use the "title", "quantity" and  input field. All other fields will be added by the database (see server.js)
+            // The addMascara()-function will add a row to the table. It will use the "title", "quantity" and  input field. All other fields will be added by the database (see server.js)
             function addMascara() {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
@@ -309,7 +353,8 @@ function showErrorAlert(message) {
                 var data_to_send = {
                     title: "Mascara",
                     quantity: "1",
-                    unit: "Stück"
+                    unit: "Stück",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
