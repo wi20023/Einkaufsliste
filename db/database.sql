@@ -32,6 +32,7 @@ CREATE TABLE `Drogerieprodukte` (
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
   `unit` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
   `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -39,8 +40,8 @@ CREATE TABLE `Drogerieprodukte` (
 -- Daten für Tabelle `Drogerieprodukte`
 --
 
-INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
-(1, 'Shampoo', '1', 'Stück', '2022-03-17');
+INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES
+(1, 'Seife', '1', 'Stück', 'Spender', '2022-03-17');
 
 -- --------------------------------------------------------
 
@@ -53,6 +54,7 @@ CREATE TABLE `Pflegeprodukte` (
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
   `unit` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
   `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -60,10 +62,10 @@ CREATE TABLE `Pflegeprodukte` (
 -- Daten für Tabelle `Pflegeprodukte`
 --
 
-INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
-(1, 'Shampoo', '1', 'Stück', '2022-03-17'),
-(2, 'Bodylotion', '2', 'Stück', '2022-03-17'),
-(3, 'Duschgel', '5', 'Stück', '2022-03-17');
+INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES
+(1, 'Shampoo', '1', 'Stück', 'Syoss', '2022-03-17'),
+(2, 'Bodylotion', '2', 'Stück', 'Nivea', '2022-03-17'),
+(3, 'Duschgel', '5', 'Stück', 'For men', '2022-03-17');
 
 -- --------------------------------------------------------
 
@@ -76,6 +78,7 @@ CREATE TABLE `mainList` (
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
   `unit` varchar(255) DEFAULT NULL,
+  `note` varchar(255) DEFAULT NULL,
   `created_at` date NOT NULL DEFAULT '2022-03-17'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -83,9 +86,9 @@ CREATE TABLE `mainList` (
 -- Daten für Tabelle `mainList`
 --
 
-INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES
-(1, 'Bananen', '6', 'Stück', '2020-04-09'),
-(2, 'Brot', '1', 'Stück', '2020-04-09');
+INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES
+(1, 'Bananen', '6', 'Stück', 'Bio', '2020-04-09'),
+(2, 'Brot', '1', 'Stück', 'Vollkorn, geschnitten', '2020-04-09');
 
 -- --------------------------------------------------------
 
@@ -132,47 +135,7 @@ ALTER TABLE `Pflegeprodukte`
 -- AUTO_INCREMENT für Tabelle `mainList`
 --
 ALTER TABLE `mainList`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
--- ------------------------Table user - because LoginDB not works ----------------------------------------
-
--- CREATE TABLE `user` (
---   `id` int(11) NOT NULL,
---   `username` varchar(255) NOT NULL,
---   `password` varchar(255) NOT NULL,
---   `created_at` date NOT NULL DEFAULT current_timestamp()
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --
--- -- Daten für Tabelle `user`
--- --
-
--- INSERT INTO `user` (`id`, `username`, `password`) VALUES
--- (1, 'Jana', '123'),
--- (2, 'Katharina', '1234'),
--- (3, 'Tijana', '12345');
-
--- --
--- -- Indizes der exportierten Tabellen
--- --
-
--- --
--- -- Indizes für die Tabelle `user`
--- --
--- ALTER TABLE `user`
---   ADD PRIMARY KEY (`id`);
-
--- --
--- -- AUTO_INCREMENT für exportierte Tabellen
--- --
-
--- --
--- -- AUTO_INCREMENT für Tabelle `user`
--- --
--- ALTER TABLE `user`
---   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---   ------------------------Table user end ----------------------------------------
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 COMMIT;
 
