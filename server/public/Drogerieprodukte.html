@@ -20,6 +20,12 @@
     <!-- The container is for the theme / deisgn -->
     <main role="main" class="container">
 
+        <!-- Navigation-Bar -->
+        <!-- <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="logout.html">Logout</a></li>
+        </ul> -->
+
         <div class="alert alert-info" role="alert">
         <h1>Drogerieprodukte</h1>
         </div>
@@ -79,10 +85,10 @@
                         txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Bemerkung</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th></tr>"
                         // Go through each row and add it to the table
                         for (var x in row) {
-                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].note + "</td><td>" + row[x].unit + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
+                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].note + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
                         }
                         // Now add a input row to add a new entry:
-                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' placeholder='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' placeholder='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' placeholder='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' placeholder='Bemerkung'><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
+                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' value='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' value='Bemerkung'><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
                         // end of the table:
                         txt += "</table>"
 

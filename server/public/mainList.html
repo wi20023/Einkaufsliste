@@ -94,7 +94,7 @@
                             txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].note + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-success' onclick='updateRow(" + row[x].id + ")'>Ändern</button> </td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
                         }
                         // Now add a input row to add a new entry:
-                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' placeholder='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' value='Bemerkung'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
+                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' value='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' value='Bemerkung'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
                         // end of the table:
                         txt += "</table>"
 
