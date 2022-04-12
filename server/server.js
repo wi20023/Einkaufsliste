@@ -252,7 +252,44 @@ app.post('/mainList', (req, res) => {
         // Set HTTP Status -> 400 is client error -> and send message
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
-});  
+}); 
+
+// POST path for database update
+app.post('/update/:id', (req, res) => {
+    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
+
+        // Get the content to local variables:
+        var title = req.body.title;
+        var quantity = req.body.quantity;
+        var unit = req.body.unit;
+        var note = req.body.note;
+        console.log("Client send database update request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
+
+        connection.query("UPDATE `mainList` SET `quantity` = ?, `unit` = ?, `note` = ?, `created_at` = current-date()) WHERE `mainList`.`id` = ?", [
+            quantity, 
+            unit, 
+            note, 
+            req.params.id
+            ], function (error, results, fields) {
+            
+            if (error) {
+                // we got an errror - inform the client
+                console.error(error); // <- log error in server
+                res.status(500).json(error); // <- send to client
+            } else {
+                // Everything is fine with the query
+                console.log('Success answer: ', results); // <- log results in console
+                // INFO: Here can be some checks of modification of the result
+                res.status(200).json(results); // <- send it to client
+            }
+            });
+        } else {
+        // There is nobody with a title nor description
+        console.error("Client send no correct data!")
+        // Set HTTP Status -> 400 is client error -> and send message
+        res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
+    }
+}); 
 // ###################### DATABASE PART END (EinkaufslisteDB; mainList) ######################
 
 
@@ -300,17 +337,17 @@ app.delete('/Drogerieprodukte/:id', (req, res) => {
 // POST path for database EinkaufslisteDB, INSERT INTO Drogerieprodukte
 app.post('/Drogerieprodukte', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
-       
+
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
-        var unit = req.body.note;
-        console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit + " ; note: " + note ); // <- log to server
+        var note = req.body.note;
+        console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
 
         // Prepare the insert query and prevent SQL-Injection: 
         connection.query("INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
-            title, quantity, unit
+            title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
@@ -319,17 +356,16 @@ app.post('/Drogerieprodukte', (req, res) => {
             } else {
                 // Everything is fine with the query
                 console.log('Success answer: ', results); // <- log results in console
-                // INFO: Here can be some checks of modification of the result
                 res.status(200).json(results); // <- send it to client
             }
-        });
-    } else {
+            });
+        } else {
         // There is nobody with a title nor description
         console.error("Client send no correct data!")
         // Set HTTP Status -> 400 is client error -> and send message
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
-});
+}); 
 // ###################### DATABASE PART END (EinkaufslisteDB; Drogerieprodukte) ######################
 
 // ###################### DATABASE PART (EinkaufslisteDB; Pflegeprodukte) ######################
@@ -376,14 +412,14 @@ app.delete('/Pflegeprodukte/:id', (req, res) => {
 // POST path for database EunkaufslisteDB, INSERT INTO Pflegeprodukte
 app.post('/Pflegeprodukte', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
-        
+
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
-        var unit = req.body.note;
-        console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit + " ; note: " + note ); // <- log to server
-    
+        var note = req.body.note;
+        console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
+
         // Prepare the insert query and prevent SQL-Injection: 
         connection.query("INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
             title, quantity, unit, note
@@ -397,15 +433,14 @@ app.post('/Pflegeprodukte', (req, res) => {
                 console.log('Success answer: ', results); // <- log results in console
                 res.status(200).json(results); // <- send it to client
             }
-        });
-    }
-    else {
+            });
+        } else {
         // There is nobody with a title nor description
         console.error("Client send no correct data!")
         // Set HTTP Status -> 400 is client error -> and send message
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
-});
+}); 
 // ###################### DATABASE PART END (EinkaufslisteDB; Pflegeprodukte) ######################
 
 
