@@ -125,7 +125,7 @@ app.post('/login', function(req, res) {
                     req.session.username = username;
 
                     function SetName() {
-                        var name = req.session.username;
+                        var name = req.sessio.username;
                         '<%Session["name"] = "' + name + '"; %>';
                         alert('<%=Session["name"] %>');
                     }
@@ -223,17 +223,18 @@ app.delete('/mainList/:id', (req, res) => {
 
 // POST path for database EinkaufslisteDB, INSERT INTO mainList
 app.post('/mainList', (req, res) => {
-    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
+    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
 
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
-        console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit ); // <- log to server
+        var note = req.body.note;
+        console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
 
         // Prepare the insert query and prevent SQL-Injection: 
-        connection.query("INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
-            title, quantity, unit
+        connection.query("INSERT INTO `mainList` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
+            title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
@@ -298,16 +299,17 @@ app.delete('/Drogerieprodukte/:id', (req, res) => {
 
 // POST path for database EinkaufslisteDB, INSERT INTO Drogerieprodukte
 app.post('/Drogerieprodukte', (req, res) => {
-    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
+    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
        
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
-        console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
+        var unit = req.body.note;
+        console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit + " ; note: " + note ); // <- log to server
 
         // Prepare the insert query and prevent SQL-Injection: 
-        connection.query("INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
+        connection.query("INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
             title, quantity, unit
             ], function (error, results, fields) {
             if (error) {
@@ -373,17 +375,18 @@ app.delete('/Pflegeprodukte/:id', (req, res) => {
 
 // POST path for database EunkaufslisteDB, INSERT INTO Pflegeprodukte
 app.post('/Pflegeprodukte', (req, res) => {
-    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined") {
+    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
         
         // Get the content to local variables:
         var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
-        console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit ); // <- log to server
+        var unit = req.body.note;
+        console.log("Client send database insert request with `title`: " + title + " ; quantity: " + quantity + " ; unit: " + unit + " ; note: " + note ); // <- log to server
     
         // Prepare the insert query and prevent SQL-Injection: 
-        connection.query("INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `created_at`) VALUES (NULL, ?, ?, ?, current_date());",[
-            title, quantity, unit
+        connection.query("INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
+            title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
                 // we got an errror - inform the client
