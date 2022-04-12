@@ -1,0 +1,133 @@
+<html>
+<head>
+    <title>Einkaufsliste</title>
+    <!-- The following is bootstrap: https://getbootstrap.com/docs/4.3/getting-started/introduction/ -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- The container is for the theme / deisgn -->
+    <main role="main" class="container">
+
+        <!-- Navigation-Bar -->
+        <ul>
+        <li><a href="logout.html">Logout</a></li>
+        </ul>
+
+        <div class="alert alert-info" role="alert">
+        <h1>Hier kannst du unsere Einkaufsliste bearbeiten</h1>
+        </div>
+
+        <button type="button" onclick="loadDoc()" class="btn btn-primary">Manual refresh</button>
+        <br><br>
+
+        <div id="target">
+            <!-- Here will be the database displayed -->
+            Loading please wait...
+        </div>
+
+        <div id="alert">
+            <!-- Here will be the alerts displayed -->
+        </div>
+
+        <!-- Return-Button -->
+        <input type="button" value="Zurück" onClick="javascript:history.back()">
+
+        <script>
+
+            function showErrorAlert(message) {
+                // Write error alert:
+                document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
+            }
+
+            function showSuccessAlert(message) {
+                // Write success alert:
+                document.getElementById("alert").innerHTML = '<div class="alert alert-success" role="alert">' + message + '</div>';
+            }
+
+            // The loadDoc()-function will load the table into the defined space
+            function loadDoc() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var row = JSON.parse(this.responseText);
+                        // Start the HTML table that should be displayed:
+                        var txt = "<table class='table table-striped table-hover'>";
+                        // add the table hader to it
+                        txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Bemerkung</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th></tr>"
+                        // Go through each row and add it to the table
+                        for (var x in row) {
+                            txt += "<tr><td></td><td>" + row[x].title + "</td><td><input id='quantity' type='text' name='Menge' class='form-control' placeholder='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' placeholder='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' placeholder='Bemerkung'></td><td>" + row[x].created_at + "</td><td> <button class='btn btn-success' onclick='saveUpdatedRow(" + row[x].id + ")'>Speichern</button></td></tr>";
+                        }
+                        txt += "</table>" 
+                        document.getElementById("target").innerHTML = txt;
+                    }
+                };
+                // the "../" is required because we're in "static" folder!
+                xhttp.open("GET", "../mainList", true);
+                xhttp.send();
+            }
+
+            // The saveUpdatedRow()-function will update a row. It will use the "title", "quantity", "unit" and "note"  input field. All other fields will be added by the database (see server.js)
+            function saveUpdatedRow(id) {
+                // construct an HTTP request
+                var xhr2 = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr2.open("POST", "../update", + id, true);
+                // define that the content will be JSON (serialization)
+                xhr2.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "",
+                    quantity: "",
+                    unit: "",
+                    note: ""
+                }
+                // Load the title and description from the inputfields on this page:
+                data_to_send.title = document.getElementById("title").value;
+                data_to_send.quantity = document.getElementById("quantity").value;
+                data_to_send.unit = document.getElementById("unit").value;
+                data_to_send.note = document.getElementById("note").value;
+                // send the collected data as JSON
+                xhr2.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr2.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich geändert!');
+                        location.href="mainList.html"
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht bearbeitet werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // load the table at the start
+            loadDoc();
+
+</script>
+</main><!-- /.container -->
+</body>
+</html>
+
