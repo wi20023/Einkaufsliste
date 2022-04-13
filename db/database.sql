@@ -63,9 +63,9 @@ CREATE TABLE `Haustierbedarf` (
 --
 
 INSERT INTO `Haustierbedarf` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES
-(1, 'Shampoo', '1', 'Stück', 'Syoss', '2022-03-17'),
-(2, 'Bodylotion', '2', 'Stück', 'Nivea', '2022-03-17'),
-(3, 'Duschgel', '5', 'Stück', 'For men', '2022-03-17');
+(1, 'Katzenstreu', '1', 'Stück', '', '2022-03-17'),
+(2, 'Vogelfutter', '2', 'Stück', 'Vitakraft', '2022-03-17'),
+(3, 'Katzengras', '1', 'Topf', 'Rewe', '2022-03-17');
 
 -- --------------------------------------------------------
 
