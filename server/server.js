@@ -78,8 +78,7 @@ var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Entrypoint - call it with: http://localhost:8081/ -> redirect you to http://localhost:8081/static/mainPage.html or
-//Entrypoint - call it with: http://localhost:8082/ -> redirect you to http://localhost:8082/static/mainPage.html
+//Entrypoint - call it with: http://localhost:8080/
 app.get('/', (req, res) => {
     console.log("Got a request and redirect it to the static page");
     res.redirect('/static/mainPage.html');
@@ -256,16 +255,15 @@ app.post('/mainList', (req, res) => {
 
 // POST path for database update
 app.post('/update/:id', (req, res) => {
-    if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
+    if (typeof req.body !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
 
         // Get the content to local variables:
-        var title = req.body.title;
         var quantity = req.body.quantity;
         var unit = req.body.unit;
         var note = req.body.note;
-        console.log("Client send database update request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
+        console.log("Client send database update request with quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
 
-        connection.query("UPDATE `mainList` SET `quantity` = ?, `unit` = ?, `note` = ?, `created_at` = current-date()) WHERE `mainList`.`id` = ?", [
+        connection.query("UPDATE `mainList` SET `quantity` = ?, `unit` = ?, `note` = ?, `created_at` = current_date() WHERE `mainList`.`id` = ?", [
             quantity, 
             unit, 
             note, 
