@@ -81,7 +81,7 @@
                 xhttp.send();
             }
 
-            // The saveUpdatedRow()-function will update a row. It will use the "title", "quantity", "unit" and "note"  input field. All other fields will be added by the database (see server.js)
+            // The saveUpdatedRow()-function will update a row. It will use the "title", "quantity", "unit" and "note" input field. All other fields will be added by the database (see server.js)
             function saveUpdatedRow(id) {
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
@@ -108,7 +108,8 @@
                         // Parse the JSON answer from the server:
                         var answer = JSON.parse(this.responseText);
                         // Show success message:
-                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich geändert!');
+                        // showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich geändert!');
+                        //Redirect to mainList
                         location.href="mainList.html"
                     } else if (this.readyState == 4 && this.status == 500) {
                         // We got an error:
