@@ -46,10 +46,10 @@ INSERT INTO `Drogerieprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `crea
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `Pflegeprodukte`
+-- Tabellenstruktur für Tabelle `Haustierbedarf`
 --
 
-CREATE TABLE `Pflegeprodukte` (
+CREATE TABLE `Haustierbedarf` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `quantity` varchar(255) DEFAULT NULL,
@@ -59,10 +59,10 @@ CREATE TABLE `Pflegeprodukte` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Daten für Tabelle `Pflegeprodukte`
+-- Daten für Tabelle `Haustierbedarf`
 --
 
-INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES
+INSERT INTO `Haustierbedarf` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES
 (1, 'Shampoo', '1', 'Stück', 'Syoss', '2022-03-17'),
 (2, 'Bodylotion', '2', 'Stück', 'Nivea', '2022-03-17'),
 (3, 'Duschgel', '5', 'Stück', 'For men', '2022-03-17');
@@ -103,9 +103,9 @@ ALTER TABLE `Drogerieprodukte`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `Pflegeprodukte`
+-- Indizes für die Tabelle `Haustierbedarf`
 --
-ALTER TABLE `Pflegeprodukte`
+ALTER TABLE `Haustierbedarf`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -126,9 +126,9 @@ ALTER TABLE `Drogerieprodukte`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT für Tabelle `Pflegeprodukte`
+-- AUTO_INCREMENT für Tabelle `Haustierbedarf`
 --
-ALTER TABLE `Pflegeprodukte`
+ALTER TABLE `Haustierbedarf`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
