@@ -43,6 +43,14 @@
             <!-- Here will be the alerts displayed -->
         </div>
 
+        <figure class="gallery">
+            <button type="button" onclick="addHay()"><img src="img/hay.png" alt="Hay"></button>
+            <button type="button" onclick="addBird()"><img src="img/bird.png" alt="Food for the bird"></button>
+            <button type="button" onclick="addFood()"><img src="img/food.png" alt="Food for the dog"></button>
+            <button type="button" onclick="addBone()"><img src="img/bone.png" alt="Threat"></button>
+            <figcaption class="figure-caption"></figcaption>
+        </figure>
+
         <!-- Return-Button -->
         <input type="button" value="Zurück" onClick="javascript:history.back()">
         <hr>
@@ -143,6 +151,150 @@
                 data_to_send.unit = document.getElementById("unit").value;
                 data_to_send.note = document.getElementById("note").value;
                 // send the collected data as JSON
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addHay()-function will add a row to the table.
+            function addHay() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../Haustierbedarf", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Heu",
+                    quantity: "1",
+                    unit: "Beutel",
+                    note: ""
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addToothpaste()-function will add a row to the table.
+            function addBird() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../Haustierbedarf", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Vogelfutter",
+                    quantity: "1",
+                    unit: "Stück",
+                    note: "Vitakraft"
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addToothpaste()-function will add a row to the table.
+            function addFood() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../Haustierbedarf", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Hundefutter",
+                    quantity: "12",
+                    unit: "Dosen",
+                    note: ""
+                }
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
+            }
+
+            // The addToothpaste()-function will add a row to the table.
+            function addBone() {
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../Haustierbedarf", true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    title: "Leckerlies",
+                    quantity: "1",
+                    unit: "Stück",
+                    note: "Kauknochen"
+                }
                 xhr.send(JSON.stringify(data_to_send));
 
                 // Handle the answer from the server:
