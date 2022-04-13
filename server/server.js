@@ -108,7 +108,7 @@ app.post('/login', function(req, res) {
             // if there is no entry in database
             if (results.length == 0) {
                 req.session.loggedin = false;
-                // we got an error - inform the client
+                // we got an errror - inform the client
                 console.error(error); // <- log error in server
                 // If username does not exist redirect to login form
                 res.redirect('/static/login.html');
@@ -134,7 +134,7 @@ app.post('/login', function(req, res) {
                     res.redirect('/static/index.html');
 			} else {
                 req.session.loggedin = false;
-                // we got an error - inform the client
+                // we got an errror - inform the client
                 console.error(error); // <- log error in server
                 // If username does not exist or password is wrong, redirect to login form
                 res.redirect('/static/login.html');
@@ -162,7 +162,7 @@ app.post('/register', (req, res) => {
             username, hashedPassword
             ], function (error, results, fields) {   
             if (error) {
-                // we got an error - inform the client
+                // we got an errror - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -210,7 +210,7 @@ app.delete('/mainList/:id', (req, res) => {
      req.params.id
     ], function (error, results, fields) {  
         if (error) {
-            // we got an error - inform the client
+            // we got an errror - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -237,7 +237,7 @@ app.post('/mainList', (req, res) => {
             title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
-                // we got an error - inform the client
+                // we got an errror - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -273,7 +273,7 @@ app.post('/update/:id', (req, res) => {
             ], function (error, results, fields) {
             
             if (error) {
-                // we got an error - inform the client
+                // we got an errror - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -300,7 +300,7 @@ app.get('/Drogerieprodukte', (req, res) => {
     // Prepare the get query
     connection.query("SELECT * FROM `Drogerieprodukte`;", function (error, results, fields) {
         if (error) {
-            // we got an error - inform the client
+            // we got an errror - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -322,7 +322,7 @@ app.delete('/Drogerieprodukte/:id', (req, res) => {
     req.params.id
     ], function (error, results, fields) {  
         if (error) {
-            // we got an error - inform the client
+            // we got an errror - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -350,7 +350,7 @@ app.post('/Drogerieprodukte', (req, res) => {
             title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
-                // we got an error - inform the client
+                // we got an errror - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -368,14 +368,14 @@ app.post('/Drogerieprodukte', (req, res) => {
 }); 
 // ###################### DATABASE PART END (EinkaufslisteDB; Drogerieprodukte) ######################
 
-// ###################### DATABASE PART (EinkaufslisteDB; Pflegeprodukte) ######################
-// GET path for database EinkaufslisteDB; SELECT from Pflegeprodukte
-app.get('/Pflegeprodukte', (req, res) => {
+// ###################### DATABASE PART (EinkaufslisteDB; Haustierbedarf) ######################
+// GET path for database EinkaufslisteDB; SELECT from Haustierbedarf
+app.get('/Haustierbedarf', (req, res) => {
     console.log("Request to load all entries from mainList");
     // Prepare the get query
-    connection.query("SELECT * FROM `Pflegeprodukte`;", function (error, results, fields) {
+    connection.query("SELECT * FROM `Haustierbedarf`;", function (error, results, fields) {
         if (error) {
-            // we got an error - inform the client
+            // we got an errror - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -387,17 +387,17 @@ app.get('/Pflegeprodukte', (req, res) => {
     });
 });
 
-// Path for database EinkaufslisteDB, DELETE FROM Pflegeprodukte
-app.delete('/Pflegeprodukte/:id', (req, res) => {
+// Path for database EinkaufslisteDB, DELETE FROM Haustierbedarf
+app.delete('/Haustierbedarf/:id', (req, res) => {
     let id = req.params.id; // <- load the ID from the path
     console.log("Request to delete Item: " + id); // <- log for debugging
 
     // Prepare the delete query and prevent SQL-Injection:  
-    connection.query("DELETE FROM `Pflegeprodukte` WHERE `id` = ?", [
+    connection.query("DELETE FROM `Haustierbedarf` WHERE `id` = ?", [
         req.params.id
         ], function (error, results, fields) {  
         if (error) {
-            // we got an error - inform the client
+            // we got an errror - inform the client
             console.error(error); // <- log error in server
             res.status(500).json(error); // <- send to client
         } else {
@@ -409,8 +409,8 @@ app.delete('/Pflegeprodukte/:id', (req, res) => {
     });
 });
 
-// POST path for database EunkaufslisteDB, INSERT INTO Pflegeprodukte
-app.post('/Pflegeprodukte', (req, res) => {
+// POST path for database EunkaufslisteDB, INSERT INTO Haustierbedarf
+app.post('/Haustierbedarf', (req, res) => {
     if (typeof req.body !== "undefined" && typeof req.body.title !== "undefined" && typeof req.body.quantity !== "undefined" && typeof req.body.unit !== "undefined" && typeof req.body.note !== "undefined") {
 
         // Get the content to local variables:
@@ -421,11 +421,11 @@ app.post('/Pflegeprodukte', (req, res) => {
         console.log("Client send database insert request with `title`: " + req.body.title + " ; quantity: " + req.body.quantity + " ; unit: " + req.body.unit + " ; note: " + req.body.note); // <- log to server
 
         // Prepare the insert query and prevent SQL-Injection: 
-        connection.query("INSERT INTO `Pflegeprodukte` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
+        connection.query("INSERT INTO `Haustierbedarf` (`id`, `title`, `quantity`, `unit`, `note`, `created_at`) VALUES (NULL, ?, ?, ?, ?, current_date());",[
             title, quantity, unit, note
             ], function (error, results, fields) {
             if (error) {
-                // we got an errror - inform the client
+                // we got an error - inform the client
                 console.error(error); // <- log error in server
                 res.status(500).json(error); // <- send to client
             } else {
@@ -441,7 +441,7 @@ app.post('/Pflegeprodukte', (req, res) => {
         res.status(400).json({ message: 'This function requries a body with "title", "quantity" and "unit"' });
     }
 }); 
-// ###################### DATABASE PART END (EinkaufslisteDB; Pflegeprodukte) ######################
+// ###################### DATABASE PART END (EinkaufslisteDB; Haustierbedarf) ######################
 
 
 // All requests to /static/... will be redirected to static files in the folder "public"
