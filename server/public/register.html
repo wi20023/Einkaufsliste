@@ -106,7 +106,7 @@
                             // Parse the JSON answer from the server:
                             var answer = JSON.parse(this.responseText);
                             //redirect to index.html if the registration ist succesfull
-                            location.href="index.html"
+                            location.href="login.html"
                         } else if (this.readyState == 4 && this.status == 500) {
                             // We got an error:
                             var error = JSON.parse(this.responseText);
