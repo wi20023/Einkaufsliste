@@ -100,7 +100,7 @@
                 data_to_send.unit = document.getElementById("unit").value;
                 data_to_send.note = document.getElementById("note").value;
                 // send the collected data as JSON
-                xhr2.send(JSON.stringify(data_to_send));
+                xhr.send(JSON.stringify(data_to_send));
 
                 // Handle the answer from the server:
                 xhr.onreadystatechange = function () {
