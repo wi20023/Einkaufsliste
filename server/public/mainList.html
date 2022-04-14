@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Einkaufsliste</title>
     <!-- The following is bootstrap: https://getbootstrap.com/docs/4.3/getting-started/introduction/ -->
@@ -14,18 +13,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="css/list.css">
 </head>
 
 <body>
-
     <!-- The container is for the theme / deisgn -->
     <main role="main" class="container">
+
+        <ul>
+        <li><a href="index.html">Übersicht</a></li>
+        <li><a href="logout.html">Logout</a></li>
+        </ul>
 
         <div class="alert alert-info" role="alert">
         <h1>Unsere Einkaufsliste</h1>
         </div>
 
-        <button type="button" onclick="loadDoc()" class="btn btn-primary">Manual refresh</button>
+        <button type="button" onclick="loadDoc()" class="btn btn-primary">Aktualisieren</button>
         <br><br>
 
         <div id="target">
@@ -54,7 +58,21 @@
             <figcaption class="figure-caption"></figcaption>
         </figure>
 
+        <!-- Return-Button -->
+        <button onClick="backToIndex()">zurück</button>
+        <hr>
+
+        <div class="alert alert-info" role="alert">
+        <!-- print this page -->
+        <a href="javascript:self.print()">Diese Seite drucken</a>
+        </div>
+
         <script>
+
+            function backToIndex() {
+                location.href="index.html"
+            }
+
 
             function showErrorAlert(message) {
                 // Write error alert:
@@ -66,28 +84,27 @@
                 document.getElementById("alert").innerHTML = '<div class="alert alert-success" role="alert">' + message + '</div>';
             }
 
-
             // The loadDoc()-function will load the table into the defined space
             function loadDoc() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         // debugger; // <- you can use the debugger for better developing in the browser
-                        // console.log(this.responseText); // this can also help durring debugging in the console of the browser
-                        // console.log(JSON.parse(this.responseText)); // even function output like JSON is visible in the browser console
+                        console.log(this.responseText); // this can also help durring debugging in the console of the browser
+                        console.log(JSON.parse(this.responseText)); // even function output like JSON is visible in the browser console
 
                         // Parse the JSON answer from the server:
                         var row = JSON.parse(this.responseText);
                         // Start the HTML table that should be displayed:
                         var txt = "<table class='table table-striped table-hover'>";
                         // add the table hader to it
-                        txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th></tr>"
+                        txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Bemerkung</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th><th></th></tr>"
                         // Go through each row and add it to the table
                         for (var x in row) {
-                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
+                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].note + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-success' onclick='updateRow(" + row[x].id + ")'>Ändern</button> </td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
                         }
                         // Now add a input row to add a new entry:
-                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' placeholder='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
+                        txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' value='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' value='Bemerkung'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
                         // end of the table:
                         txt += "</table>"
 
@@ -97,6 +114,11 @@
                 // the "../" is required because we're in "static" folder!
                 xhttp.open("GET", "../mainList", true);
                 xhttp.send();
+            }
+
+            // The updateRow(id)-function will redirect to update.html - there you can change quantity, unit and note
+            function updateRow(id) {
+                location.href="update.html"
             }
 
             // The deleteRow(id)-function will delete a row based on the given id. The "Delete"-Button will use this and give the ID to it.
@@ -113,7 +135,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht entfernt werden!');
+                        showErrorAlert('Der Artikel konnte nicht entfernt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -135,12 +157,14 @@
                 var data_to_send = {
                     title: "",
                     quantity: "",
-                    unit: ""
+                    unit: "",
+                    note: ""
                 }
                 // Load the title and description from the inputfields on this page:
                 data_to_send.title = document.getElementById("title").value;
                 data_to_send.quantity = document.getElementById("quantity").value;
                 data_to_send.unit = document.getElementById("unit").value;
+                data_to_send.note = document.getElementById("note").value;
                 // send the collected data as JSON
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -150,20 +174,18 @@
                         // Parse the JSON answer from the server:
                         var answer = JSON.parse(this.responseText);
                         // Show success message:
-                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt!');
+                        showSuccessAlert('Der Artikel ' + data_to_send.title + ' wurde erfolgreich hinzugefügt! Bemerkung: ' + data_to_send.note);
                     } else if (this.readyState == 4 && this.status == 500) {
                         // We got an error:
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
                 };
             }
-
-// ###################### Add Items-Buttons ######################
 
                 // The addWater()-function will add a row to the table.
                 function addWater() {
@@ -177,7 +199,8 @@
                 var data_to_send = {
                     title: "Mineralwasser",
                     quantity: "1",
-                    unit: "Kasten"
+                    unit: "Kasten",
+                    note: "mit Kohlensäure"
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -193,7 +216,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -212,7 +235,8 @@
                 var data_to_send = {
                     title: "Limonade",
                     quantity: "1",
-                    unit: "Kasten"
+                    unit: "Kasten",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -228,7 +252,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -246,8 +270,9 @@
                 // prepare the structure of the message
                 var data_to_send = {
                     title: "Obst",
-                    quantity: "-",
-                    unit: "-"
+                    quantity: "",
+                    unit: "",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -263,7 +288,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -281,8 +306,9 @@
                 // prepare the structure of the message
                 var data_to_send = {
                     title: "Gemüse",
-                    quantity: "-",
-                    unit: "-"
+                    quantity: "",
+                    unit: "",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -298,7 +324,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -317,7 +343,8 @@
                 var data_to_send = {
                     title: "Eier",
                     quantity: "10",
-                    unit: "Stück"
+                    unit: "Stück",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -333,7 +360,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -352,7 +379,8 @@
                 var data_to_send = {
                     title: "Milch",
                     quantity: "12",
-                    unit: "Liter"
+                    unit: "Liter",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -368,7 +396,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -387,7 +415,8 @@
                 var data_to_send = {
                     title: "Käse",
                     quantity: "1",
-                    unit: "Stück"
+                    unit: "Stück",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -403,7 +432,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -422,7 +451,8 @@
                 var data_to_send = {
                     title: "Brot",
                     quantity: "500",
-                    unit: "Gramm"
+                    unit: "Gramm",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -438,7 +468,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -457,7 +487,8 @@
                 var data_to_send = {
                     title: "Fleisch",
                     quantity: "1",
-                    unit: "Kg"
+                    unit: "Kg",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -473,7 +504,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -492,7 +523,8 @@
                 var data_to_send = {
                     title: "Mehl",
                     quantity: "5",
-                    unit: "Kg"
+                    unit: "Kg",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -508,7 +540,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -527,7 +559,8 @@
                 var data_to_send = {
                     title: "Nudeln",
                     quantity: "2",
-                    unit: "Packungen"
+                    unit: "Packungen",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -543,7 +576,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -562,7 +595,8 @@
                 var data_to_send = {
                     title: "Öl",
                     quantity: "1",
-                    unit: "Liter"
+                    unit: "Liter",
+                    note: ""
                 }
                 xhr.send(JSON.stringify(data_to_send));
 
@@ -578,7 +612,7 @@
                         var error = JSON.parse(this.responseText);
                         console.log("ERROR: ", error);
                         // Show error alert:
-                        showErrorAlert('ERROR - Der Artikel konnte nicht hinzugefügt werden!');
+                        showErrorAlert('Der Artikel konnte nicht hinzugefügt werden!');
                     }
                     // reload table
                     loadDoc();
@@ -590,10 +624,6 @@
 
         </script>
 
-    <!-- Return-Button -->
-    <input type="button" value="Zurück" onClick="javascript:history.back()">
-
     </main><!-- /.container -->
-
 </body>
 </html>
