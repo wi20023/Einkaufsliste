@@ -90,8 +90,8 @@
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         // debugger; // <- you can use the debugger for better developing in the browser
-                        console.log(this.responseText); // this can also help durring debugging in the console of the browser
-                        console.log(JSON.parse(this.responseText)); // even function output like JSON is visible in the browser console
+                        // console.log(this.responseText); // this can also help durring debugging in the console of the browser
+                        // console.log(JSON.parse(this.responseText)); // even function output like JSON is visible in the browser console
 
                         // Parse the JSON answer from the server:
                         var row = JSON.parse(this.responseText);
@@ -101,7 +101,7 @@
                         txt += "<tr><th></th><th scope='col'>Artikel</th><th scope='col'>Menge</th><th scope='col'>Einheit</th><th scope='col'>Bemerkung</th><th scope='col'>Hinzugefügt am</th><th scope='col'>Aktion</th><th></th></tr>"
                         // Go through each row and add it to the table
                         for (var x in row) {
-                            txt += "<tr><td></td><td>" + row[x].title + "</td><td>" + row[x].quantity + "</td><td>" + row[x].unit + "</td><td>" + row[x].note + "</td><td>" + row[x].created_at + "</td><td> <button class='btn btn-success' onclick='updateRow(" + row[x].id + ")'>Ändern</button> </td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
+                            txt += "<tr><td></td><td>" + row[x].title + "</td><td><input id='editQuantity' type='text' class='form-control' value=" + row[x].quantity + "></td><td><input type='text' id='editUnit' class='form-control' value=" + row[x].unit + "></td><td><input type='text' id='editNote' class='form-control' value=" + row[x].note + "></td><td>" + row[x].created_at + "</td><td> <button class='btn btn-success' onclick='updateRow(" + row[x].id + ")'>Ändern</button> </td><td> <button class='btn btn-danger' onclick='deleteRow(" + row[x].id + ")'>Erledigt</button> </td></tr>";
                         }
                         // Now add a input row to add a new entry:
                         txt += "<tr><td></td><td><input id='title' type='text' name='Artikel' class='form-control' value='Artikel'></td><td><input id='quantity' type='text' name='Menge' class='form-control' value='Menge'></td><td><input id='unit' type='text' name='Einheit' class='form-control' value='Einheit'></td><td><input id='note' type='text' name='Bemerkung' class='form-control' value='Bemerkung'></td><td></td><td> <button class='btn btn-success' onclick='addRow()'>Hinzufügen</button> </td></tr>"
@@ -116,9 +116,47 @@
                 xhttp.send();
             }
 
-            // The updateRow(id)-function will redirect to update.html - there you can change quantity, unit and note
+            // The updateRow(id)-function will redirect to update_mainList.html - there you can change quantity, unit and note
             function updateRow(id) {
-                location.href="update.html"
+                // location.href="update_mainList.html"
+                // construct an HTTP request
+                var xhr = new XMLHttpRequest();
+                // define the type POST to the url "../database" - we are in 'static/database'
+                xhr.open("POST", "../update/" + id, true);
+                // define that the content will be JSON (serialization)
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // prepare the structure of the message
+                var data_to_send = {
+                    quantity: "",
+                    unit: "",
+                    note: ""
+                }
+                // Load the quantity, unit and note from the inputfields on this page:
+                data_to_send.quantity = document.getElementById("editQuantity").value;
+                data_to_send.unit = document.getElementById("editUnit").value;
+                data_to_send.note = document.getElementById("editNote").value;
+                // send the collected data as JSON
+                xhr.send(JSON.stringify(data_to_send));
+
+                // Handle the answer from the server:
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // Parse the JSON answer from the server:
+                        var answer = JSON.parse(this.responseText);
+                        // Show success message:
+                        showSuccessAlert('Der Artikel wurde erfolgreich geändert!');
+                        //Redirect to mainList
+                        // location.href="mainList.html"
+                    } else if (this.readyState == 4 && this.status == 500) {
+                        // We got an error:
+                        var error = JSON.parse(this.responseText);
+                        console.log("ERROR: ", error);
+                        // Show error alert:
+                        showErrorAlert('Der Artikel konnte nicht bearbeitet werden!');
+                    }
+                    // reload table
+                    loadDoc();
+                };
             }
 
             // The deleteRow(id)-function will delete a row based on the given id. The "Delete"-Button will use this and give the ID to it.
