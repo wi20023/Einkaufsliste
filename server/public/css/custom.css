@@ -81,12 +81,6 @@ li a:hover {
   a {
     color: dodgerblue;
   }
-  
-  /* Set a grey background color and center the text of the "sign in" section */
-  /* .signin {
-    background-color: #f1f1f1;
-    text-align: center;
-  } */
 
 /* Full-width input fields */
 input[type=text], input[type=password] {
@@ -111,33 +105,6 @@ button {
 
 button:hover {
   opacity: 0.8;
-}
-
-/* Center the close button */
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-  position: relative;
-}
-
-img.avatar {
-  width: 40%;
-  border-radius: 50%;
-}
-
-.container {
-  padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-.close:hover,
-.close:focus {
-  color: rgba(25, 0, 255, 0.829);
-  cursor: pointer;
 }
 
 /* Add Zoom Animation */
