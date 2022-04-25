@@ -19,6 +19,7 @@
 </head>
 <body>
 
+  <!-- Navigationbar -->
   <ul>
     <li><a href="mainPage.html">Startseite</a></li>
     <li><a href="register.html">Registrierung</a></li>
@@ -28,12 +29,13 @@
       <h1>Login</h1>
       <p>Bitte melden Sie sich mit Ihren Login-Daten an.</p>
       <hr>
-    </div>
+  </div>
 
+      <!-- Form for Login, which sends data to server.js -->
       <form id="form" action="../login" method="post">
 				<input type="text" name="username" placeholder="Benutzername" id="username" required>
 				<input type="password" name="password" placeholder="Passwort" id="password" required>
-        <button><input type="submit" value="Login"></button>
+        <button type="submit" value="Login">Login</button>
 			</form>
 
 
