@@ -20,6 +20,7 @@
     <!-- The container is for the theme / deisgn -->
     <main role="main" class="container">
 
+        <!-- Navigationbar -->
         <ul>
         <li><a href="index.html">Übersicht</a></li>
         <li><a href="logout.html">Logout</a></li>
@@ -68,11 +69,10 @@
         </div>
 
         <script>
-
+            // function backToIndex will redirect the user to index.html
             function backToIndex() {
                 location.href="index.html"
             }
-
 
             function showErrorAlert(message) {
                 // Write error alert:
@@ -89,10 +89,6 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        // debugger; // <- you can use the debugger for better developing in the browser
-                        // console.log(this.responseText); // this can also help durring debugging in the console of the browser
-                        // console.log(JSON.parse(this.responseText)); // even function output like JSON is visible in the browser console
-
                         // Parse the JSON answer from the server:
                         var row = JSON.parse(this.responseText);
                         // Start the HTML table that should be displayed:
@@ -116,22 +112,23 @@
                 xhttp.send();
             }
 
-            // The updateRow(id)-function will redirect to update_mainList.html - there you can change quantity, unit and note
+            // The updateRow(id)-function will can change quantity, unit and note
             function updateRow(id) {
-                // location.href="update_mainList.html"
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
-                // define the type POST to the url "../database" - we are in 'static/database'
-                xhr.open("POST", "../update/" + id, true);
+                // define the type PUT to the url "../update" - we are in 'static/database'
+                xhr.open("PUT", "../update/", true);
                 // define that the content will be JSON (serialization)
                 xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 // prepare the structure of the message
                 var data_to_send = {
+                    id: "",
                     quantity: "",
                     unit: "",
                     note: ""
                 }
                 // Load the quantity, unit and note from the inputfields on this page:
+                data_to_send.id = id;
                 data_to_send.quantity = document.getElementById("editQuantity").value;
                 data_to_send.unit = document.getElementById("editUnit").value;
                 data_to_send.note = document.getElementById("editNote").value;
@@ -145,8 +142,6 @@
                         var answer = JSON.parse(this.responseText);
                         // Show success message:
                         showSuccessAlert('Der Artikel wurde erfolgreich geändert!');
-                        //Redirect to mainList
-                        // location.href="mainList.html"
                     } else if (this.readyState == 4 && this.status == 500) {
                         // We got an error:
                         var error = JSON.parse(this.responseText);

@@ -18,11 +18,13 @@
 </head>
 <body>
 
+  <!-- Navigationbar -->
   <ul>
     <li><a href="mainPage.html">Startseite</a></li>
     <li><a href="login.html">Login</a></li>
   </ul>
 
+  <!-- form for registration, which will send data to server.js -->
   <form id="form" action="register" method="get">
     <h1>Registrierung</h1>
     <p>Neuen Account erstellen.</p>
@@ -45,14 +47,13 @@
       <!-- Here will be the alerts displayed -->
     </div>
   
+    <!-- redirect the user to login form -->
     <div class="container signin">
       <p>Sie haben bereits einen Account? <a href="login.html">Login</a>.</p>
     </div>
-
 </form>
 
 <script>
-
             function showErrorAlert(message) {
                 // Write error alert:
                 document.getElementById("alert").innerHTML = '<div class="alert alert-danger" role="alert">' + message + '</div>';
@@ -60,7 +61,6 @@
             
             // HTTP request
             function registration() {
-
                 //Error if username is blank
                 if (username.value === '' || username.value == null) {
                 showErrorAlert('Bitte Benutzernamen eingeben.');  
