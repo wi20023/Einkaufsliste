@@ -17,7 +17,6 @@
 </head>
 
 <body>
-
     <!-- The container is for the theme / deisgn -->
     <main role="main" class="container">
 
@@ -62,7 +61,7 @@
         </div>
 
         <script>
-
+            //redirect the user to index.html
             function backToIndex() {
                 location.href="index.html"
             }
@@ -105,22 +104,23 @@
                 xhttp.send();
             }
 
-            // The updateRow(id)-function will redirect to update_drogerieprodukte.html - there you can change quantity, unit and note
+            // The updateRow(id)-function will can change quantity, unit and note
             function updateRow(id) {
-                // location.href="update_drogerieprodukte.html"
                 // construct an HTTP request
                 var xhr = new XMLHttpRequest();
-                // define the type POST to the url "../database" - we are in 'static/database'
-                xhr.open("POST", "../update_Drogerieprodukte/" + id, true);
-                // define that the content will be JSON (serialization)
-                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                // define the type PUT to the url "../update_Drogerieprodukte" - we are in 'static/database'
+                xhr.open("PUT", "../update_Drogerieprodukte/", true);
+                 // define that the content will be JSON (serialization)
+                 xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 // prepare the structure of the message
                 var data_to_send = {
+                    id: "",
                     quantity: "",
                     unit: "",
                     note: ""
                 }
                 // Load the quantity, unit and note from the inputfields on this page:
+                data_to_send.id = id;
                 data_to_send.quantity = document.getElementById("editQuantity").value;
                 data_to_send.unit = document.getElementById("editUnit").value;
                 data_to_send.note = document.getElementById("editNote").value;
@@ -134,8 +134,6 @@
                         var answer = JSON.parse(this.responseText);
                         // Show success message:
                         showSuccessAlert('Der Artikel wurde erfolgreich geändert!');
-                        //Redirect to mainList
-                        // location.href="mainList.html"
                     } else if (this.readyState == 4 && this.status == 500) {
                         // We got an error:
                         var error = JSON.parse(this.responseText);
@@ -147,8 +145,6 @@
                     loadDoc();
                 };
             }
-
-
 
             // The deleteRow(id)-function will delete a row based on the given id. The "Delete"-Button will use this and give the ID to it.
             function deleteRow(id) {
@@ -436,8 +432,6 @@
             loadDoc();
 
         </script>
-
     </main><!-- /.container -->
-
 </body>
 </html>
