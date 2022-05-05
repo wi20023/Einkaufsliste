@@ -1,7 +1,7 @@
 Container starten:
 Die Container werden mit dem Befehl docker-compose up --build gebaut.
 Der Einstiegspunkt ist http://localhost:8080.
-Es empfiehlt sich als Google Chrome als Browser zu verwenden.
+Es empfiehlt sich als Google Chrome oder Microsoft Edge als Browser zu verwenden.
 
 Folgende Testuser für den Login sind bereits angelegt: 
 Benutzername: Jana
